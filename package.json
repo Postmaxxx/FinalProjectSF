@@ -1,5 +1,5 @@
 {
-  "name": "FinalProjectSF",
+  "name": "final_project_sf",
   "version": "1.0.0",
   "description": "Site for accounting stolen bicycles",
   "main": "index.js",
@@ -8,11 +8,17 @@
     "webpack": "webpack",
     "dev": "webpack-dev-server --mode development",
     "start": "webpack serve",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "commit": "cz",
+    "commit2":"git-cz",
+    "c1": "git add src",
+    "c2": "npm run commit2",
+    "c3": "git push",
+    "c": "npm run c1 && npm run c2 && npm run c3"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Postmaxxx/FinalProjectSF.git"
+    "url": "git+https://github.com/Postmaxxx/FinalProjectSF"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +29,8 @@
   "homepage": "https://github.com/Postmaxxx/FinalProjectSF#readme",
   "dependencies": {
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "src": "^1.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -38,5 +45,13 @@
     "webpack": "^5.17.0",
     "webpack-cli": "^4.4.0",
     "webpack-dev-server": "^3.11.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "tools/js/commitizen.js"
+    }
   }
 }
