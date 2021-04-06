@@ -3,36 +3,20 @@ import ReactDom from 'react-dom';
 
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 
-import { Menu } from './components/Menu/Menu.jsx';
-import { MainPage } from './components/MainPage/MainPage.jsx';
-import { TheftReport } from './components/TheftReport/TheftReport.jsx';
-import { Admin } from './components/Admin/Admin.jsx';
+import { Provider, connect } from 'react-redux';
 
-import { UsersList } from './components/UsersList/UsersList.jsx';
-import { UserCreate } from './components/UserCreate/UserCreate.jsx';
+import store from './redux/store';
+
+import App from './App.jsx';
 
 
 
-export class App extends Component {
-    render() {
-        return (
-            <div>
-                <Menu /> 
-
-                <Switch>
-                <Route path='/mainpage' component={MainPage} exact="true" />
-                <Route path='/theft-report' component={TheftReport} exact="true" />
-                <Route path='/admin' component={Admin} exact="true" />
-
-                </Switch>
-            </div>
-        );
-    }
-}
 
 ReactDom.render(
     <BrowserRouter>
-        <App />
+        <Provider store={store}>
+            <App />
+        </ Provider>
     </BrowserRouter>,
     document.getElementById('root'),
 )

@@ -1,0 +1,5 @@
+const ADD_CASE = 'ADD_CASE';
+const DELETE_CASE = 'DELETE_CASE';
+const EDIT_CASE = 'EDIT_CASE';
+
+export {ADD_CASE, DELETE_CASE, EDIT_CASE};

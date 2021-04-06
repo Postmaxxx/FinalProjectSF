@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap");
+
+:root {
+    --menu-admin__item_selected-color: rgb(96, 155, 202) ;
+    --menu-admin__item_selected_switch-time: 0.3s
+}
+
+
+.menu-admin {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-admin a {
+    text-decoration: none;
+    transition: var(--menu-admin__item_selected_switch-time);
+    position: relative;
+    color: #FFF;
+    text-transform: uppercase;
+    font-family: Roboto;
+    font-weight: 600;
+    font-size: 24px;
+}
+
+
+
+.menu-admin__nav {
+    padding-left: 150px;
+    padding-right: 150px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    box-sizing: border-box;
+}
+
+
+.menu-admin__exit {
+    width: 70px;
+} 
+
+
+.menu-admin__item__button {
+    width: 50px;
+    height: 50px;
+    background: url(../../../assets/images/icon-exit-blue.png);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    outline:0 none;
+    border: 0px solid #000;
+    background-size: cover;
+    border-radius: 50%;
+}
+
+
+.menu-admin a::before,
+.menu-admin a::after {
+    content: "";
+    background-color: #FFF;
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    width: 0px;
+    transition: var(--menu-admin__item_selected_switch-time);
+}
+
+.menu-admin a::before {
+    left: 50%;
+}
+
+.menu-admin a::after {
+    right: 50%;
+}
+
+
+.menu-admin a:hover::before,
+.menu-admin a:hover::after {
+    background-color: var(--menu-admin__item_selected-color);
+    width: 50%;
+}
+
+
+
+.menu-admin__item_is-active {
+    color: var(--menu-admin__item_selected-color) !important;
+}

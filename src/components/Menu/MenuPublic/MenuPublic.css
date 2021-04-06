@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap");
+
+:root {
+    --menu-public__item_selected-color: rgb(96, 155, 202) ;
+    --menu-public__item_selected_switch-time: 0.3s
+}
+
+
+.menu-public {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-public a {
+    text-decoration: none;
+    transition: var(--menu-public__item_selected_switch-time);
+    position: relative;
+    color: #FFF;
+    text-transform: uppercase;
+    font-family: Roboto;
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.menu-public div:nth-child(1) {
+    margin-left: 80px;
+
+}
+
+.menu-public div:nth-child(3) {
+    margin-right: 40px;
+}
+
+
+.menu-public a:hover {
+    /*color: var(--menu__item_selected-color);*/
+}
+
+
+.menu-public a::before,
+.menu-public a::after {
+    content: "";
+    background-color: #FFF;
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    width: 0px;
+    transition: var(--menu-public__item_selected_switch-time);
+}
+
+.menu-public a::before {
+    left: 0;
+}
+
+.menu-public a::after {
+    right: 0;
+}
+
+
+.menu-public a:hover::before,
+.menu-public a:hover::after {
+    background-color:var(--menu-public__item_selected-color);
+    width: 50%;
+}
+
+
+
+.menu-public__item_is-active {
+    color: var(--menu-public__item_selected-color) !important;
+}
+
