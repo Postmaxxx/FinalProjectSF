@@ -63,10 +63,10 @@ class LoginRegistrationPageContainer extends Component {
             email: this.props.store.main.email,
             password: this.props.store.main.password
         }
-        this.props.mainActions.setFetching('start', 'Загрузка...');
+        this.props.mainActions.setFetching('start', 'logginIn', 'Загрузка...');
         axios.post('http://84.201.129.203:8888/api/auth/sign_in', logginUser)
         .then(response => {
-            this.props.mainActions.setFetching('success', 'Logged in successfully.');
+            this.props.mainActions.setFetching('success', 'logginIn',  'Logged in successfully.');
             localStorage.clear();
             localStorage.setItem('token', JSON.stringify(response.data.token));
             this.props.mainActions.setToken(response.data.token);
@@ -78,7 +78,7 @@ class LoginRegistrationPageContainer extends Component {
             }
         })
         .catch(error => {
-            this.props.mainActions.setFetching('error', `Произошла ошибка при загрузке случаев кражи: ${error.response.status} ( ${error.message} )`);
+            this.props.mainActions.setFetching('error', 'logginIn', `Произошла ошибка при загрузке случаев кражи: ${error.response.status} ( ${error.message} )`);
             alert(error);
         })
 
@@ -103,7 +103,7 @@ class LoginRegistrationPageContainer extends Component {
     render() {
         return (
             <>
-                {this.props.store.main.isFetching ? <Preloader {...this.props} preloaderText='Вход...'/> 
+                {this.props.store.main.fetching.logginIn.isFetching ? <Preloader {...this.props} preloaderText='Вход...' marginTop='200px'/> 
                 : <div className='log-reg-page-container'>
                     <div className='log-reg-page-container__switchers-area'>
                         <button className='log-reg-page-container__switchers-area__button-log-reg log-reg-page-container__switchers-area__button-login' onClick={this.onLoginButtonClick}>Вход</button>

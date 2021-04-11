@@ -13,8 +13,8 @@ class AdminContainer extends Component {
     receiveCasesEmployees = ( should_receive ) => {
         let token = this.props.store.main.token;
         //if (token) {
-            this.props.mainActions.setFetching('start', 'Загрузка...');
             if ( should_receive.cases === true ) {
+                this.props.mainActions.setFetching('start', 'receiveCases', 'Загрузка...');
                 axios.get('http://84.201.129.203:8888/api/cases', {headers: {'Authorization': `Bearer ${token}`}}, {
                     onDownloadProgress: (progressEvent) => { //видимо, не работает с запросами GET?
                         console.log('progressEvent: ', progressEvent);
@@ -23,27 +23,26 @@ class AdminContainer extends Component {
                 .then(response => {
                     if (response.status === 200) {
                         this.props.casesActions.setCasesArray(response.data);
-                        this.props.mainActions.setFetching('success', 'All cases has been received.');
+                        this.props.mainActions.setFetching('success', 'receiveCases', 'All cases has been received.');
                         //console.log('Your data,sir: ', this.props.store);
                         console.log('All cases data received!');
                     }
                 })
                 .catch(error => {
                     alert(`Произошла ошибка при загрузке случаев кражи: ${error.response.status} ( ${error.message} )`);
-                    this.props.mainActions.setFetching('error', `Произошла ошибка при загрузке случаев кражи: ${error.response.status} ( ${error.message} )`);
+                    this.props.mainActions.setFetching('error', 'receiveCases', `Произошла ошибка при загрузке случаев кражи: ${error.response.status} ( ${error.message} )`);
                 });
             };
             if ( should_receive.employees === true ) {
+                this.props.mainActions.setFetching('start', 'receiveEmployees', 'Загрузка списка сотрудников...');
                 axios.get('http://84.201.129.203:8888/api/officers ', {headers: {'Authorization': `Bearer ${token}`}})
                 .then(response => {
                     if (response.status === 200) {
                         this.props.employeesActions.setEmployeesArray(response.data);
-                        this.props.mainActions.setFetching('success', 'All employees has been received.');
-
+                        this.props.mainActions.setFetching('success', 'receiveEmployees', 'All employees has been received.');
                         console.log('All employees data received!');
 
                         let employeesObject = {};
-
                         this.props.store.employees.employeesArray.map((item) => {
                             employeesObject[item._id] = {
                                 firstName: item.firstName,
@@ -56,7 +55,7 @@ class AdminContainer extends Component {
                 })
                 .catch(error => {
                     alert(`Произошла ошибка при загрузке сотрудников: ${error.response.status} ( ${error.message} )`);
-                    this.props.mainActions.setFetching('error', `Произошла ошибка при загрузке сотрудников: ${error.response.status} ( ${error.message} )`);
+                    this.props.mainActions.setFetching('error', 'receiveEmployees', `Произошла ошибка при загрузке сотрудников: ${error.response.status} ( ${error.message} )`);
 
                 })
             };

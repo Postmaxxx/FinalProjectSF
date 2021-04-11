@@ -9,7 +9,14 @@ import { connect } from 'react-redux';
 const LoginPage = (props) => {
 
 
-
+    const onShowPasswordClick = () => {
+        let showPassDiv = document.querySelector('.show-passwords-icon');
+        showPassDiv.classList.toggle('visiblePassword')
+        let passwordInput = document.querySelector('.password-input');
+        if (passwordInput.getAttribute('type') === 'password') {
+            passwordInput.setAttribute('type', 'text');
+        } else {passwordInput.setAttribute('type', 'password')};
+    }
 
 
     const onChangeEmail = e => {
@@ -38,12 +45,15 @@ const LoginPage = (props) => {
                 <div className='log-reg-page-container__form-area__input_area__input_item'>
                     <label className='log-reg-page-container__form-area__input_area__input_item__label'>Пароль</label>
                     <input 
-                        className='log-reg-page-container__form-area__input_area__input_item__input'
+                        className='log-reg-page-container__form-area__input_area__input_item__input password-input'
                         placeholder=''
                         type='password'
                         value={props.store.main.password}
                         onChange={onChangePassword}
                     />
+                </div>
+                <div className='show-passwords-container'>
+                    <div className='show-passwords-icon' onClick={onShowPasswordClick}></div>
                 </div>
             </div>
         </div>

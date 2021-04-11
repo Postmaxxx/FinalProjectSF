@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import CaseDetails from './CaseDetails.jsx';
 import axios from 'axios';
 import { changeInputStyle } from '../../../Common/processors.js'
+import Preloader from '../../../Common/Preloader.jsx';
 
 class CaseDetailsContainer extends Component {
 
@@ -149,6 +150,18 @@ class CaseDetailsContainer extends Component {
         this.props.casesActions.setCasesArray(new_cases_array);
     }
 
+
+    deleteCaseFromArray = (current_id) => {
+        let itemIndex = this.props.store.cases.casesArray.findIndex((item, index) => {
+            return current_id===item._id
+        })
+
+        let new_cases_array = this.props.store.cases.casesArray;
+        new_cases_array.splice(itemIndex, 1);
+        this.props.casesActions.setCasesArray(new_cases_array);
+    }
+
+
     applyDetails = (shouldExit) => { 
         //this.closeConfirmation();
         let _id = this.props.store.cases.detailedCaseId;
@@ -169,9 +182,11 @@ class CaseDetailsContainer extends Component {
             resolution: this.props.store.case.resolution
         }
         if (_id) {
+            this.props.mainActions.setFetching('start', 'updateCase', 'Редактирование дела...');
             axios.put(`http://84.201.129.203:8888/api/cases/${_id}`, case_corrected, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
                 if (response.status === 200) {
+                    this.props.mainActions.setFetching('success', 'updateCase', 'Редактирование дела успешно завершено!');
                     console.log('Case has been changed sucessfully!');
                     this.applyChangesToArray(_id, case_corrected);
                     if (response.data.officer !== undefined) {
@@ -183,12 +198,15 @@ class CaseDetailsContainer extends Component {
                 }
             })
             .catch(error => {
-                alert(error.response);
+                this.props.mainActions.setFetching('error', 'updateCase', `Произошла ошибка при редактировании дела: ${error.response.status} ( ${error.message} )`);
+                //alert(error.response);
             })
         } else {
+            this.props.mainActions.setFetching('start', 'createCase', 'Созднание дела...');
             axios.post('http://84.201.129.203:8888/api/cases', case_corrected, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
                 if (response.status===200) {
+                    this.props.mainActions.setFetching('success', 'createCase', 'Создание дела успешно завершено!');
                     let current_id = response.data._id;
                     console.log('Case has been added sucessfully!');
                     this.props.casesActions.setDetailedCaseId(_id);
@@ -202,7 +220,8 @@ class CaseDetailsContainer extends Component {
                 }
             })
             .catch(error => {
-                alert(error.response);
+                this.props.mainActions.setFetching('error', 'createCase', `Произошла ошибка при создании дела: ${error.response.status} ( ${error.message} )`);
+                //alert(error.response);
             });
         };
     }
@@ -214,24 +233,40 @@ class CaseDetailsContainer extends Component {
         let _id = this.props.store.cases.detailedCaseId;
         if (_id) {
             let token = this.props.store.main.token;
+            this.deleteCaseFromArray(_id);
+
+            this.props.mainActions.setFetching('start', 'deleteCase', 'Удаление дела...');
             axios.delete(`http://84.201.129.203:8888/api/cases/${_id}`, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
                 if (response.status === 200) {
-                    alert('Case has been deleted sucessfully!')
-                    this.props.receiveCasesEmployees({ cases: true, employees: false });
+                    this.props.mainActions.setFetching('success', 'deleteCase', 'Удаление дела успешно завершено...');
+                    //alert('Case has been deleted sucessfully!')
+                    //this.props.receiveCasesEmployees({ cases: true, employees: false });
+                    this.deleteCaseFromArray(_id);
+                    this.closeDetails();
                 }
             })
             .catch(error => {
-                alert(`Произошла ошибка: ${error.status} ( ${error.message} )`);
+                this.props.mainActions.setFetching('error', 'deleteCase', `Произошла ошибка при удалении дела: ${error.response.status} ( ${error.message} )`);
+                //alert(`Произошла ошибка: ${error.status} ( ${error.message} )`);
             });
         }     
         this.closeConfirmation();
-        this.closeDetails();
     }
+    
 
 
     render() {
+        let create_fetching = this.props.store.main.fetching.createCase.isFetching;
+        let update_fetching = this.props.store.main.fetching.updateCase.isFetching;
+        let delete_fetching = this.props.store.main.fetching.deleteCase.isFetching;
+        //console.log(delete_fetching);
         return (
+                <>
+                {create_fetching && <Preloader {...this.props} preloaderText='Создание делa...' marginTop='200px' marginLeft='auto'/> }
+                {update_fetching && <Preloader {...this.props} preloaderText='Редактирование делa...' marginTop='200px' marginLeft='auto'/> }
+                {delete_fetching && <Preloader {...this.props} preloaderText='Удаление делa...' marginTop='200px' marginLeft='auto'/> }
+                {create_fetching || update_fetching || delete_fetching ||
                 <CaseDetails 
                     {...this.props} 
                     onApplyDetailsButtonClick={this.onApplyDetailsButtonClick}
@@ -240,6 +275,8 @@ class CaseDetailsContainer extends Component {
                     onDeleteCaseButtonClick={this.onDeleteCaseButtonClick}
                     closeConfirmation={this.closeConfirmation}
                 />
+                }
+                </>
         )
     }
 

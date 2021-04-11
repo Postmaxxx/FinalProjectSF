@@ -27,7 +27,7 @@ const AllEmployees = (props) => {
 
     return (
         <div className='all-employees-container__table-container'>
-            <table className='employees-table'>
+            <table className='employees-table' onClick={(e) => props.onTableClick(e)}>
                 <thead>
                     <tr className='employees-table__header'>
                         <th className='employees-table__col-1'>

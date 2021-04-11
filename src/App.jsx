@@ -25,7 +25,7 @@ class App extends Component {
 
 
     componentDidMount() {
-       // console.log('this ', this);
+        console.log('this ', this);
         let token = JSON.parse(localStorage.getItem('token'));
         this.props.mainActions.setToken(token);
         if (token) {

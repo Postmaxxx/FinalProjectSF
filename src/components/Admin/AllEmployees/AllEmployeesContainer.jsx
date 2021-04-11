@@ -14,8 +14,10 @@ class AllEmployeesContainer extends Component {
 
     componentDidMount() {
         this.props.receiveCasesEmployees({ cases: false, employees: true });
-        let employees_table = document.querySelector('.employees-table');
-        employees_table.addEventListener('click',((e) => {this.tableClickProcessor(e)}) )
+        /*if (!this.props.store.main.fetching.receiveEmployees.isFetching) {
+            let employees_table = document.querySelector('.employees-table');
+            employees_table.addEventListener('click',((e) => {this.tableClickProcessor(e)}) )
+        }*/
         Modal.setAppElement('body');
     };
 
@@ -23,11 +25,12 @@ class AllEmployeesContainer extends Component {
     receiveEmployeeIdDetailsData = () => {
         let token = this.props.store.main.token;
         let _id = this.props.store.employees.detailedEmployeeId;
-
+        this.props.mainActions.setFetching('start', 'getDetailedEmployee', 'Загрузка сотрудника...');
         axios.get(`http://84.201.129.203:8888/api/officers/${_id}`, {headers: {'Authorization': `Bearer ${token}`}})
         .then(response => {
             if (response.status === 200) {
                 //console.log('Data for Case ID has been received!: ', response);
+                this.props.mainActions.setFetching('success', 'getDetailedEmployee', 'Employee data has been received!');
                 this.props.employeeActions.setEmail(response.data.email);
                 this.props.employeeActions.setFirstName(response.data.firstName);
                 this.props.employeeActions.setLastName(response.data.lastName);
@@ -38,15 +41,16 @@ class AllEmployeesContainer extends Component {
             }
         })
         .catch(error => {
+            this.props.mainActions.setFetching('error', 'getDetailedCase', `Произошла ошибка при загрузке сотрудника: ${error.response.status} ( ${error.message} )`);
             alert(error.response);
         })
     }
 
 
-    tableClickProcessor = (e) => {
+    tableClickProcessor = async(e) => {
         if (e.target.nodeName === 'TD') {
-            let employee_id = e.path[1].attributes._id.value; 
-            this.props.employeesActions.setDetailedEmployeeId(employee_id);
+            let employee_id = e.target.parentElement.attributes._id.nodeValue;
+            await this.props.employeesActions.setDetailedEmployeeId(employee_id);
             this.props.employeesActions.setDetailedEmployeeHeaderText('Подробная информация о выбранном сотруднике');
             this.receiveEmployeeIdDetailsData();
             this.props.employeesActions.setShowEmployeeDetails(true);
@@ -78,13 +82,13 @@ class AllEmployeesContainer extends Component {
     render() {
         return (
             <div className='all-employees-container'>
-                <h1 className='all-employees-container__header'>Информация о кражах велосипедов</h1>
-                <p className='all-employees-container__subheader'>Список всех зарегистрированных случаев кражи велосипедов</p>
+                <h1 className='all-employees-container__header'>Информация о сотрудниках</h1>
+                <p className='all-employees-container__subheader'>Список всех сотрудников</p>
                 <button className='all-employees-container__add-button' onClick={this.onAddEmployeeButtonClick} />
 
 
-                {this.props.store.main.isFetching ? <Preloader {...this.props} preloaderText='Загрузка...'/>
-                : <AllEmployees {...this.props}  />}
+                {this.props.store.main.fetching.receiveEmployees.isFetching ? <Preloader {...this.props} preloaderText='Загрузка...'/>
+                : <AllEmployees {...this.props} onTableClick={this.tableClickProcessor} />}
             
 
 
@@ -101,10 +105,13 @@ class AllEmployeesContainer extends Component {
                         }
                     }}
                     >
-                    <EmployeeDetailsContainer 
-                        {...this.props} 
-                        receiveAllEmployeesData={this.receiveAllEmployeesData}
-                    />
+ 
+                    {this.props.store.main.fetching.getDetailedEmployee.isFetching ? <Preloader {...this.props} preloaderText='Загрузка сотрудника...' marginTop='200px' marginLeft='auto'/> 
+                    : <EmployeeDetailsContainer {...this.props} />
+                    }
+
+
+
                 </Modal>
 
 

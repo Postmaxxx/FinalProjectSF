@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route, NavLink, withRouter } from 'react-router-
 //import './MainPage.css';
 import store from '../../../redux/store';
 import { connect } from 'react-redux';
+import Preloader from '../../Common/Preloader.jsx';
 
 
 const AllCases = (props) => {
@@ -56,11 +57,11 @@ const AllCases = (props) => {
     })
 
    
-
+    
 
     return (
         <div className='all-cases-container__table-container'>
-            <table className='cases-table'>
+            <table className='cases-table' onClick={(e) => props.onTableClick(e)}>
                 <thead>
                     <tr className='cases-table__header'>
                         <th className='cases-table__col-1'>
@@ -121,7 +122,9 @@ const AllCases = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {cases_list}
+
+                {cases_list }
+                    
                 </tbody>
 
             </table>
@@ -133,6 +136,10 @@ const AllCases = (props) => {
 
 
 }
+/*
 
+                {props.store.main.fetching.receiveCases.isFetching ? <Preloader {...props} preloaderText='Загрузка списка дел...'/>
+                : cases_list }
+                */
 
 export default AllCases;

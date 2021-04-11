@@ -78,17 +78,21 @@ export const setCurrentPage = currentPage => {
     }
 };
 */
-export const setFetching = ( fetchStatus, fetchInfo ) => {
+
+
+export const setFetching = ( fetchStatus, fetchObject, fetchInfo ) => {
     if (fetchStatus === 'start') {
         return {
             type: 'CHANGE_FETCHING',
-            fetchStatus
+            fetchStatus,
+            fetchObject
         }
     };
     if (fetchStatus === 'error') {
         return {
             type: 'CHANGE_FETCHING',
             fetchStatus,
+            fetchObject,
             fetchErrors: fetchInfo
         }
     };
@@ -96,13 +100,15 @@ export const setFetching = ( fetchStatus, fetchInfo ) => {
         return {
             type: 'CHANGE_FETCHING',
             fetchStatus,
+            fetchObject,
             fetchSucess: fetchInfo
         }
     };
     if (fetchStatus === 'clear') {
         return {
             type: 'CHANGE_FETCHING',
-            fetchStatus
+            fetchStatus,
+            fetchObject
         }
     };
 };

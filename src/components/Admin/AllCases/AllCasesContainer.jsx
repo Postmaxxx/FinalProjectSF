@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import './AllCases.css'
 import Preloader from '../../Common/Preloader.jsx';
 import { connect } from 'react-redux';
@@ -15,10 +15,16 @@ class AllCasesContainer extends Component {
 
     componentDidMount() {
         this.props.receiveCasesEmployees({ cases: true, employees: true });
-        let cases_table = document.querySelector('.cases-table');
-        cases_table.addEventListener('click',((e) => {this.tableClickProcessor(e)}) )
-        Modal.setAppElement('body');
+        //if (!this.props.store.main.fetching.receiveCases.isFetching) {
+           /* let cases_table = document.querySelector('.cases-table');
+            console.log('cases_table = ', cases_table);
+            cases_table.addEventListener('click', ((e) => {this.tableClickProcessor(e)}))*/
+            Modal.setAppElement('body');
+            //console.log('listener');
+        //}
     };
+
+
 
 
     receiveCaseIdDetailsData = () => {
@@ -26,10 +32,11 @@ class AllCasesContainer extends Component {
         let token = this.props.store.main.token;
         let _id = this.props.store.cases.detailedCaseId;
         //console.log('receive id: ', _id);
-
+        this.props.mainActions.setFetching('start', 'getDetailedCase', 'Загрузка дела...');
         axios.get(`http://84.201.129.203:8888/api/cases/${_id}`, {headers: {'Authorization': `Bearer ${token}`}})
         .then(response => {
             if (response.status === 200) {
+                this.props.mainActions.setFetching('success', 'getDetailedCase', 'Case detailes has been received!');
                 this.props.caseActions.setStatus(response.data.status);
                 this.props.caseActions.setDate(response.data.date);
                 this.props.caseActions.setLicenseNumber(response.data.licenseNumber);
@@ -48,6 +55,7 @@ class AllCasesContainer extends Component {
             }
         })
         .catch(error => {
+            this.props.mainActions.setFetching('error', 'getDetailedCase', `Произошла ошибка при загрузке дела: ${error.response.status} ( ${error.message} )`);
             alert(error.response);
         })
 
@@ -56,14 +64,14 @@ class AllCasesContainer extends Component {
 
 
 
-    tableClickProcessor = (e) => {
-        //console.log('Table click', e.path[1].attributes._id.value);
+    tableClickProcessor = async(e) => {
         if (e.target.nodeName === 'TD') {
-            let case_id = e.path[1].attributes._id.value; 
-            this.props.casesActions.setDetailedCaseId(case_id);
-            this.props.casesActions.setDetailedCaseHeaderText('Подробная информация о выбранном случае');
+            //let case_id = e.path[1].attributes._id.value; 
+            let case_id = e.target.parentElement.attributes._id.nodeValue;
+            await this.props.casesActions.setDetailedCaseId(case_id);
             this.receiveCaseIdDetailsData();
             this.props.casesActions.setShowCaseDetails(true);
+            this.props.casesActions.setDetailedCaseHeaderText('Подробная информация о выбранном случае');
         }
     };
 
@@ -95,7 +103,7 @@ class AllCasesContainer extends Component {
     }
 
     preloaderTest = () => {
-        this.props.mainActions.setFetching('start');
+        this.props.mainActions.setFetching('start', 'receiveCases', 'nothing');
         console.log('main = ', this.props.store.main);
     }
 
@@ -108,8 +116,8 @@ class AllCasesContainer extends Component {
                 <button onClick={this.preloaderTest}>Preloader</button>
                 <button className='all-cases-container__add-button' onClick={this.onAddCaseButtonClick} />
 
-                {this.props.store.main.isFetching ? <Preloader {...this.props} preloaderText='Загрузка...'/>
-                : <AllCases {...this.props} />}
+                {this.props.store.main.fetching.receiveCases.isFetching ? <Preloader {...this.props} preloaderText='Загрузка списка дел...'/>
+                : <AllCases {...this.props} onTableClick={this.tableClickProcessor}/>}
 
                 <Modal
                     isOpen={this.props.store.cases.showCaseDetails}
@@ -121,12 +129,15 @@ class AllCasesContainer extends Component {
                     style={{
                         overlay: {
                             backgroundColor: 'rgba(255, 255, 255, 0.9)'
-                        }
+                        },
+                        content: {
+
+                          }
                     }}
                     >
-                    <CaseDetailsContainer 
-                        {...this.props} 
-                    />
+                    {this.props.store.main.fetching.getDetailedCase.isFetching ? <Preloader {...this.props} preloaderText='Загрузка делa...' marginTop='200px' marginLeft='auto'/> 
+                    : <CaseDetailsContainer {...this.props} />
+                    }
                 </Modal>
 
             </div>

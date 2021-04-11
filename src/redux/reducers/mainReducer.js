@@ -13,9 +13,79 @@ const initialState = {
     token: '',
 
 
-    isFetching: false,
+    fetching: {
+        receiveEmployees : {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        receiveCases: {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        reportCase: {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        logginIn: {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        updateCase: {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        updateEmployee: {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        deleteCase: {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        deleteEmployee: {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        createCase: {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        createEmployee: {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        register: {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        getDetailedCase: {
+            isFetching: false,
+            success: '',
+            error: ''
+        },
+        getDetailedEmployee: {
+            isFetching: false,
+            success: '',
+            error: ''
+        }
+    },
+
+
+
+    /*isFetching: false,
     fetchErrors: '',
-    fetchSuccess: '',
+    fetchSuccess: '',*/
     //currentPage: '/public/mainpage'
     
 };
@@ -81,36 +151,70 @@ function mainReducer(state = initialState, action) {
                 currentPage: action.currentPage
             }
 */
-        case 'CHANGE_FETCHING':
+
+
+        case 'CHANGE_FETCHING':   // setFetching = ( fetchStatus, fetchObject, fetchInfo )
             if (action.fetchStatus === 'start') {
+                let fetchObject = action.fetchObject;
+                let fetching = state.fetching;
                 return {
                     ...state,
-                    isFetching: true,
-                    fetchErrors: ''
-                }
-            }
-            if (action.fetchStatus === 'error') {
-                return {
-                    ...state,
-                    isFetching: false,
-                    fetchErrors: action.fetchErrors,
-                    fetchSucess: ''
+                    fetching: {
+                        ...fetching,
+                        [fetchObject]: {
+                            isFetching: true,
+                            fetchErrors: '',
+                            fetchSucess: ''
+                        }
+                    }
                 }
             }
             if (action.fetchStatus === 'success') {
+                let fetchObject = action.fetchObject;
+                let fetching = state.fetching;
                 return {
                     ...state,
-                    isFetching: false,
-                    fetchErrors: '',
-                    fetchSucess: action.fetchSucess
+                    fetching: {
+                        ...fetching,
+                        [fetchObject]: {
+                            isFetching: false,
+                            fetchErrors: '',
+                            fetchSucess: action.fetchSucess
+                        }
+                        
+                    }
+                }
+            }            
+            if (action.fetchStatus === 'error') {
+                let fetchObject = action.fetchObject;
+                let fetching = state.fetching;
+                return {
+                    ...state,
+                    fetching: {
+                        ...fetching,
+                        [fetchObject]: {
+                            isFetching: false,
+                            fetchErrors: action.fetchErrors,
+                            fetchSucess: ''
+                        }
+                        
+                    }
                 }
             }
             if (action.fetchStatus === 'clear') {
+                let fetchObject = action.fetchObject;
+                let fetching = state.fetching;
                 return {
                     ...state,
-                    isFetching: false,
-                    fetchErrors: '',
-                    fetchSucess: ''
+                    fetching: {
+                        ...fetching,
+                        [fetchObject]: {
+                            isFetching: false,
+                            fetchErrors: '',
+                            fetchSucess: ''
+                        }
+                        
+                    }
                 }
             }
 

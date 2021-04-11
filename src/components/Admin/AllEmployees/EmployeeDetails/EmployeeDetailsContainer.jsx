@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import EmployeeDetails from './EmployeeDetails.jsx';
 import axios from 'axios';
 import { changeInputStyle } from '../../../Common/processors.js'
+import Preloader from '../../../Common/Preloader.jsx';
 /*import swal from 'sweetalert';*/
 
 class EmployeeDetailsContainer extends Component {
@@ -141,6 +142,17 @@ class EmployeeDetailsContainer extends Component {
 
 
 
+    deleteEmployeeFromArray = (current_id) => {
+        let itemIndex = this.props.store.employees.employeesArray.findIndex((item, index) => {
+            console.log(current_id);
+            return current_id===item._id
+        })
+        let new_employees_array = this.props.store.employees.employeesArray;
+        new_employees_array.splice(itemIndex, 1);
+        this.props.employeesActions.setEmployeesArray(new_employees_array);
+    }
+
+
     applyDetails = (shouldExit) => {
         this.closeConfirmation();
         let _id = this.props.store.employees.detailedEmployeeId;
@@ -156,6 +168,7 @@ class EmployeeDetailsContainer extends Component {
         }
         //console.log(employee_corrected);
         if (_id) {
+            this.props.mainActions.setFetching('start', 'updateEmployee', 'Редактирование сотрудника...');
             axios.put(`http://84.201.129.203:8888/api/officers/${_id}`, employee_corrected, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
                 if (response.status === 200) {
@@ -164,6 +177,7 @@ class EmployeeDetailsContainer extends Component {
                         text: "Вы успешно изменили данные сотрудника.",
                         icon: "success",
                       });*/
+                    this.props.mainActions.setFetching('success', 'updateEmployee', 'Редактирование сотрудника успешно завершено!');
                     this.applyChangesToArray(_id, employee_corrected);
                     console.log('Employee has been changed sucessfully!');
                     if (shouldExit) {
@@ -172,7 +186,8 @@ class EmployeeDetailsContainer extends Component {
                 }
             })
             .catch(error => {
-                alert(`Произошла ошибка: ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
+                this.props.mainActions.setFetching('error', 'updateEmployee', `Произошла ошибка при редактировании сотрудника: ${error.response.status} ( ${error.message} )`);
+                //alert(`Произошла ошибка: ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
                 /*swal({
                     title: "Ошибка!",
                     text: `Сервер сообщил об ошибке ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`,
@@ -180,11 +195,13 @@ class EmployeeDetailsContainer extends Component {
                   });*/
             })
         } else {
+            this.props.mainActions.setFetching('start', 'createEmployee', 'Созднание сотрудника...');
             axios.post('http://84.201.129.203:8888/api/officers', employee_corrected, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
                 if (response.status===200) {
                     let _id = response.data._id;
                     this.props.employeesActions.setDetailedEmployeeId(_id);
+                    this.props.mainActions.setFetching('success', 'createEmployee', 'Создание сотрудника успешно завершено!');
                     /*swal({
                         title: "Выполнено!",
                         text: "Вы успешно добавили сотрудника.",
@@ -198,7 +215,8 @@ class EmployeeDetailsContainer extends Component {
                 }
             })
             .catch(error => {
-                alert(`Произошла ошибка: ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
+                this.props.mainActions.setFetching('error', 'createEmployee', `Произошла ошибка при создании сотрудника: ${error.response.status} ( ${error.message} )`);
+                //alert(`Произошла ошибка: ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
             });
         };
     }
@@ -208,26 +226,40 @@ class EmployeeDetailsContainer extends Component {
 
     deleteEmployee = () => {
         let _id = this.props.store.employees.detailedEmployeeId;
+
         if (_id) {
             let token = this.props.store.main.token;
+            this.props.mainActions.setFetching('start', 'deleteEmployee', 'Удаление сотрудника...');
             axios.delete(`http://84.201.129.203:8888/api/officers/${_id}`, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
                 if (response.status === 200) {
-                    alert('Employee has been deleted sucessfully!');
-                    this.props.receiveCasesEmployees({ cases: false, employees: true });
+                    this.props.mainActions.setFetching('success', 'deleteEmployee', 'Удаление сотрудника успешно завершено...');
+                    //alert('Employee has been deleted sucessfully!');
+                    //this.props.receiveCasesEmployees({ cases: false, employees: true });
+                    this.deleteEmployeeFromArray(_id);
+                    this.closeDetails();
                 }
             })
             .catch(error => {
+                this.props.mainActions.setFetching('error', 'deleteEmployee', `Произошла ошибка при удалении сотрудника: ${error.response.status} ( ${error.message} )`);
                 alert(`Произошла ошибка: ${error.status} ( ${error.message} )`);
             });
         }
         this.closeConfirmation();
-        this.closeDetails();
     }
 
 
     render() {
+        let create_fetching = this.props.store.main.fetching.createEmployee.isFetching;
+        let update_fetching = this.props.store.main.fetching.updateEmployee.isFetching;
+        let delete_fetching = this.props.store.main.fetching.deleteEmployee.isFetching;
+        //console.log(delete_fetching);
         return (
+            <>
+                {create_fetching && <Preloader {...this.props} preloaderText='Создание сотрудника...' marginTop='200px' marginLeft='auto'/> }
+                {update_fetching && <Preloader {...this.props} preloaderText='Редактирование сотрудника...' marginTop='200px' marginLeft='auto'/> }
+                {delete_fetching && <Preloader {...this.props} preloaderText='Удаление сотрудника...' marginTop='200px' marginLeft='auto'/> }
+                {create_fetching || update_fetching || delete_fetching ||
                 <EmployeeDetails 
                     {...this.props} 
                     onApplyDetailsButtonClick={this.onApplyDetailsButtonClick}
@@ -236,6 +268,8 @@ class EmployeeDetailsContainer extends Component {
                     onDeleteEmployeeButtonClick={this.onDeleteEmployeeButtonClick}
                     closeConfirmation={this.closeConfirmation}
                 />
+                }
+            </>
         )
     }
 

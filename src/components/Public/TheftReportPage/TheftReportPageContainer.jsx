@@ -6,6 +6,7 @@ import TheftReportPage from './TheftReportPage.jsx';
 import axios from 'axios';
 import Modal from 'react-modal';
 import { changeInputStyle } from '../../Common/processors.js';
+import Preloader from '../../Common/Preloader.jsx';
 
 
 
@@ -128,14 +129,16 @@ class TheftReportPageContainer extends Component {
             ownerFullName: this.props.store.case.ownerFullName,
             createdAt: current_date, 
             updateAt: current_date,
-            clientId: undefined,
+            clientId: 'bmluYS5wb3N0bmlrb3ZhODdAeWFuZGV4LnJ1',
             description: this.props.store.case.description,
             resolution: ''
         };
         console.log('Starting axios post... ', report_data);
+        this.props.mainActions.setFetching('start', 'reportCase', 'Отправка сообщения...');
         axios.post('http://84.201.129.203:8888/api/public/report', report_data)
         .then(response => {
             if (response.status===200) {
+                this.props.mainActions.setFetching('success', 'reportCase', `Данные успешно отправлены!`);
                 this.props.caseActions.setDate('');
                 this.props.caseActions.setLicenseNumber('');
                 this.props.caseActions.setColor('');
@@ -146,20 +149,42 @@ class TheftReportPageContainer extends Component {
             }
         })
         .catch(error => {
+            this.props.mainActions.setFetching('error', 'reportCase', `Произошла ошибка при отправке сообщения: ${error.response.status} ( ${error.message} )`);
             alert('Ошибка при отправке отчета!' + error);
         });
 
     }
+
+
+    testFetch = () => {
+        this.props.mainActions.setFetching('start', 'logginIn' ,'Загрузка...');
+        console.log(this.props);
+    }
        
+
+    testFetch2 = () => {
+        this.props.mainActions.setFetching('start', 'receiveEmployees' ,'Загрузка...');
+        console.log(this.props);
+    }
+
+
     render() {
         return (
             <div className='theft-report-page-container'>
-                <TheftReportPage 
+                <button onClick={this.testFetch}>ChangeFetch</button>
+                <button onClick={this.testFetch2}>ChangeFetch2</button>
+                
+                {this.props.store.main.fetching.reportCase.isFetching ? <Preloader {...this.props} preloaderText='Отправка сообщения...' marginTop='0px' marginLeft='auto'/> 
+                    :  <TheftReportPage 
                     {...this.props} 
                     onClearFormButtonClick={this.onClearFormButtonClick}
                     onSubmitFormButtonClick={this.onSubmitFormButtonClick}
                     closeConfirmation={this.closeConfirmation}
                     />
+                    }
+
+                
+               
             </div>
         )
 
