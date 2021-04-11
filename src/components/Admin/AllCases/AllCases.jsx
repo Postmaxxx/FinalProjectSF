@@ -9,6 +9,15 @@ const AllCases = (props) => {
 
     let cases_array = props.store.cases.casesArray;
     let cases_list = cases_array.map((item) => {
+        
+        let firstName = undefined;
+        let lastName = undefined; 
+
+            if(props.store.employees.employeesObject[item.officer]) {
+                firstName = props.store.employees.employeesObject[item.officer].firstName;
+                lastName = props.store.employees.employeesObject[item.officer].lastName;
+            }
+
         return (
             <tr className='cases-table__data' _id={item._id} key={item._id}>
                 <td>{item.createdAt.slice(0,10)}</td>
@@ -25,9 +34,10 @@ const AllCases = (props) => {
 
 
 
-                <td>{item.officer !== undefined ? 
-                props.store.employees.employeesObject[item.officer] !== undefined ? props.store.employees.employeesObject[item.officer] : 'Нет в базе'
-                : 'Не назначен'}</td>
+                <td>{item.officer === undefined ? 'Не назначен'
+                : firstName === undefined ? 'Нет в базе'
+                : `${firstName} ${lastName}`
+                }</td>
 
 
 

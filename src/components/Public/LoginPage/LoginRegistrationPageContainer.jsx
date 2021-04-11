@@ -4,8 +4,8 @@ import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import store from '../../../redux/store';
 import { connect } from 'react-redux';
 import './LoginRegistrationPage.css';
-
-
+import axios from 'axios';
+import Preloader from '../../Common/Preloader.jsx';
 import LoginPage from './LoginPage.jsx'
 import RegistrationPage from './RegistrationPage.jsx'
 
@@ -51,36 +51,34 @@ class LoginRegistrationPageContainer extends Component {
         loginButton.classList.remove('log-reg-page-container__switchers-area__button_selected')
         registraionButton.classList.add('log-reg-page-container__switchers-area__button_selected');
     }
-
-
-
+/*
+    {
+        onUploadProgress: ({ total, loaded }) => {
+            // update progress
+        })
+*/
     onEnterButtonClick = () => {
         console.log('Starting login fetch...');
         let logginUser = {
             email: this.props.store.main.email,
             password: this.props.store.main.password
         }
-        fetch('http://84.201.129.203:8888/api/auth/sign_in', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(logginUser)
-        })
-        .then((response) => {
-            return response.json()
-        })
-        .then((data) => {
-            //console.log('data loggin in: ', data);
+        this.props.mainActions.setFetching('start', 'Загрузка...');
+        axios.post('http://84.201.129.203:8888/api/auth/sign_in', logginUser)
+        .then(response => {
+            this.props.mainActions.setFetching('success', 'Logged in successfully.');
             localStorage.clear();
-            localStorage.setItem('token', JSON.stringify(data.token));
-            this.props.mainActions.setToken(data.token);
-            this.props.mainActions.setClientId(data.clientId);
+            localStorage.setItem('token', JSON.stringify(response.data.token));
+            this.props.mainActions.setToken(response.data.token);
+            this.props.mainActions.setClientId(response.data.clientId);
             if (this.props.store.main.token) {
                 this.props.mainActions.setAutorized(true);
                 this.props.history.push('/admin/all_cases')
                 console.log('You have been autorized!');
             }
         })
-        .catch((error) => {
+        .catch(error => {
+            this.props.mainActions.setFetching('error', `Произошла ошибка при загрузке случаев кражи: ${error.response.status} ( ${error.message} )`);
             alert(error);
         })
 
@@ -104,24 +102,27 @@ class LoginRegistrationPageContainer extends Component {
 
     render() {
         return (
-            <div className='log-reg-page-container'>
-                <div className='log-reg-page-container__switchers-area'>
-                    <button className='log-reg-page-container__switchers-area__button-log-reg log-reg-page-container__switchers-area__button-login' onClick={this.onLoginButtonClick}>Вход</button>
-                    <button className='log-reg-page-container__switchers-area__button-log-reg log-reg-page-container__switchers-area__button-registration' onClick={this.onRegistrationButtonClick}>Регистрация</button>
-                </div>
+            <>
+                {this.props.store.main.isFetching ? <Preloader {...this.props} preloaderText='Вход...'/> 
+                : <div className='log-reg-page-container'>
+                    <div className='log-reg-page-container__switchers-area'>
+                        <button className='log-reg-page-container__switchers-area__button-log-reg log-reg-page-container__switchers-area__button-login' onClick={this.onLoginButtonClick}>Вход</button>
+                        <button className='log-reg-page-container__switchers-area__button-log-reg log-reg-page-container__switchers-area__button-registration' onClick={this.onRegistrationButtonClick}>Регистрация</button>
+                    </div>
 
-                {this.props.store.main.showLoginForm ? <LoginPage {...this.props} /> : null }
-                {this.props.store.main.showRegistrationForm ? <RegistrationPage {...this.props} /> : null }
+                    {this.props.store.main.showLoginForm ? <LoginPage {...this.props} /> : null }
+                    {this.props.store.main.showRegistrationForm ? <RegistrationPage {...this.props} /> : null }
                 
-                <div className='log-reg-page-container__buttons-area'>
-                    {this.props.store.main.showLoginForm ? (<button className='log-reg-page-container__form-area__buttons_area__button-log-reg' onClick={this.onEnterButtonClick}>Войти</button>) : null }
-                    {this.props.store.main.showRegistrationForm ? (<button className='log-reg-page-container__form-area__buttons_area__button-log-reg' onClick={this.onRegisterButtonClick}>Зарегистрироваться</button>) : null }
-                </div>
+                    <div className='log-reg-page-container__buttons-area'>
+                        {this.props.store.main.showLoginForm ? (<button className='log-reg-page-container__form-area__buttons_area__button-log-reg' onClick={this.onEnterButtonClick}>Войти</button>) : null }
+                        {this.props.store.main.showRegistrationForm ? (<button className='log-reg-page-container__form-area__buttons_area__button-log-reg' onClick={this.onRegisterButtonClick}>Зарегистрироваться</button>) : null }
+                    </div>
 
-                <button onClick={this.onAdminButtonClick}>ENTER</button>
+                    <button onClick={this.onAdminButtonClick}>ENTER</button>
+                </div> } 
+            </>
+
                 
-            </div>
-
         )
     }
 }

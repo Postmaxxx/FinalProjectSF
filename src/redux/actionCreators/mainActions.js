@@ -82,18 +82,27 @@ export const setFetching = ( fetchStatus, fetchInfo ) => {
     if (fetchStatus === 'start') {
         return {
             type: 'CHANGE_FETCHING',
+            fetchStatus
         }
     };
     if (fetchStatus === 'error') {
         return {
             type: 'CHANGE_FETCHING',
+            fetchStatus,
             fetchErrors: fetchInfo
         }
     };
     if (fetchStatus === 'success') {
         return {
             type: 'CHANGE_FETCHING',
+            fetchStatus,
             fetchSucess: fetchInfo
+        }
+    };
+    if (fetchStatus === 'clear') {
+        return {
+            type: 'CHANGE_FETCHING',
+            fetchStatus
         }
     };
 };

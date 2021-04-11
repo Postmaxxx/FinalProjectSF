@@ -25,13 +25,17 @@ class App extends Component {
 
 
     componentDidMount() {
-        console.log('this ', this);
-        //console.log(this.props.caseActions);
+       // console.log('this ', this);
         let token = JSON.parse(localStorage.getItem('token'));
         this.props.mainActions.setToken(token);
         if (token) {
             this.props.mainActions.setAutorized(true);
+            this.props.history.push('/admin/all_cases')
             console.log('You have been autorized!'); 
+        } else {
+            this.props.mainActions.setAutorized(false);
+            this.props.history.push('/public/mainpage')
+            console.log('You have not been autorized!');  
         }
     }
 
@@ -39,12 +43,11 @@ class App extends Component {
     render() {
         return (
             <div className='app'>
-                <Route path='/'  exact >
-                    <Redirect to="/public/mainpage" />
+                <Route path='/' exact >
+                    <Redirect to="/public/mainpage" /> 
                 </ Route>
 
                 <MenuContainer {...this.props}/>
-
                 
                 <div className='main-container'>
                     <Switch>
@@ -52,11 +55,8 @@ class App extends Component {
                         <Route path='/admin' render={() => <AdminContainer {...this.props}/>} />
                     </Switch>
                 </div>
-                
-                
-                
+  
                 <Footer  {...this.props}/>
-
             </div>
         );
     }

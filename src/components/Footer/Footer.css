@@ -56,15 +56,34 @@
     background-image: url(../../assets/images/icon-add-blue.png);
 }
 
-
 .footer__navigation__item__button__login {
     background-image: url(../../assets/images/icon-login-blue.png);
 }
 
+.footer__navigation__item__button__all-cases {
+    background-image: url(../../assets/images/icon-caseslist-blue.png);
+}
 
-.button_selected {
+.footer__navigation__item__button__all_employees {
+    background-image: url(../../assets/images/icon-employees-blue.png);
+}
+
+.footer__navigation__item__button__logoff {
+    background-image: url(../../assets/images/icon-exit-blue.png);
+}
+
+
+.button_selected  {
     background-color: rgb(96, 155, 202);
     width: 40px;
     height: 40px;
     transition: 0.5s;
 }
+
+.footer__navigation__item__button__logoff:hover {
+    background-color: rgb(252, 174, 166);
+    width: 40px;
+    height: 40px;
+    transition: 0.5s;
+}
+

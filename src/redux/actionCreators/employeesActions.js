@@ -35,9 +35,3 @@ export const setEmployeesObject = employeesObject => {
     };
 };
 
-export const setEmployeesMap = employeesMap => {
-    return { 
-        type: 'CHANGE_EMPLOYEES_MAP',
-        employeesMap
-    };
-};

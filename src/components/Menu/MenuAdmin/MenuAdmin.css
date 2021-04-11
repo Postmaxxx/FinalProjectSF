@@ -2,7 +2,10 @@
 
 :root {
     --menu-admin__item_selected-color: rgb(96, 155, 202) ;
-    --menu-admin__item_selected_switch-time: 0.3s
+    --menu-admin__item_selected_switch-time: 0.3s;
+    --preloader-animation-duration: 1s;
+    --preloader-thickness: 15px;
+    --preloader-radius: 150px;
 }
 
 

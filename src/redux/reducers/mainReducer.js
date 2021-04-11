@@ -11,6 +11,8 @@ const initialState = {
     rePassword: '',
     passwordsIdentical: false,
     token: '',
+
+
     isFetching: false,
     fetchErrors: '',
     fetchSuccess: '',
@@ -84,8 +86,7 @@ function mainReducer(state = initialState, action) {
                 return {
                     ...state,
                     isFetching: true,
-                    fetchErrors: '',
-                    fetchSucess: ''
+                    fetchErrors: ''
                 }
             }
             if (action.fetchStatus === 'error') {
@@ -104,7 +105,14 @@ function mainReducer(state = initialState, action) {
                     fetchSucess: action.fetchSucess
                 }
             }
-
+            if (action.fetchStatus === 'clear') {
+                return {
+                    ...state,
+                    isFetching: false,
+                    fetchErrors: '',
+                    fetchSucess: ''
+                }
+            }
 
 
         default: return state;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import './AllCases.css'
- 
+import Preloader from '../../Common/Preloader.jsx';
 import { connect } from 'react-redux';
 import AllCases from './AllCases.jsx';
 import CaseDetailsContainer from './CaseDetails/CaseDetailsContainer.jsx'
@@ -94,18 +94,25 @@ class AllCasesContainer extends Component {
         this.props.casesActions.setShowCaseDetails(true);
     }
 
+    preloaderTest = () => {
+        this.props.mainActions.setFetching('start');
+        console.log('main = ', this.props.store.main);
+    }
+
 
     render() {
         return (
             <div className='all-cases-container'>
                 <h1 className='all-cases-container__header'>Информация о кражах велосипедов</h1>
                 <p className='all-cases-container__subheader'>Список всех зарегистрированных случаев кражи велосипедов</p>
+                <button onClick={this.preloaderTest}>Preloader</button>
                 <button className='all-cases-container__add-button' onClick={this.onAddCaseButtonClick} />
 
-                <AllCases {...this.props} /> 
+                {this.props.store.main.isFetching ? <Preloader {...this.props} preloaderText='Загрузка...'/>
+                : <AllCases {...this.props} />}
 
                 <Modal
-                     isOpen={this.props.store.cases.showCaseDetails}
+                    isOpen={this.props.store.cases.showCaseDetails}
                     //contentLabel="Minimal Modal Example"
                     shouldCloseOnOverlayClick={true}
                     shouldCloseOnEsc={true}

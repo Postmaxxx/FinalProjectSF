@@ -3,7 +3,7 @@ const initialState = {
     showEmployeeDetails: false,
     detailedEmployeeId: '',
     detailedEmployeeHeaderText: '',
-    employeesMap: '',
+   //employeesMap: '',
     employeesObject: {}
 };
 
@@ -35,11 +35,6 @@ function employeesReducer(state = initialState, action) {
                 employeesObject: action.employeesObject
         };
 
-        case 'CHANGE_EMPLOYEES_MAP':
-            return {
-                ...state,
-                employeesMap: action.employeesMap
-        };
         default: return state;
     }
 }

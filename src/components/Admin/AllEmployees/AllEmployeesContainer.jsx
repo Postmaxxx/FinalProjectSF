@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import './AllEmployees.css'
- 
+import Preloader from '../../Common/Preloader.jsx';
 import { connect } from 'react-redux';
 import AllEmployees from './AllEmployees.jsx';
 import EmployeeDetailsContainer from './EmployeeDetails/EmployeeDetailsContainer.jsx'
@@ -82,7 +82,10 @@ class AllEmployeesContainer extends Component {
                 <p className='all-employees-container__subheader'>Список всех зарегистрированных случаев кражи велосипедов</p>
                 <button className='all-employees-container__add-button' onClick={this.onAddEmployeeButtonClick} />
 
-                <AllEmployees {...this.props} />
+
+                {this.props.store.main.isFetching ? <Preloader {...this.props} preloaderText='Загрузка...'/>
+                : <AllEmployees {...this.props}  />}
+            
 
 
                 <Modal

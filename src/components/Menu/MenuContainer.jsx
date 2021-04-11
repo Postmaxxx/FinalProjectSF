@@ -12,13 +12,12 @@ class MenuContainer extends Component {
     }
  
 
+
     render() {
         return (
             <div className='menu-container'>
-                <Switch>
-                        <Route path='/public' render={() => <MenuPublic {...this.props}/>} />
-                        <Route path='/admin' render={() => <MenuAdmin {...this.props}/>} /> 
-                </Switch>
+                {this.props.store.main.autorized ? <MenuAdmin {...this.props} /> : <MenuPublic {...this.props}/> }
+
 
             </div>
 
@@ -27,6 +26,14 @@ class MenuContainer extends Component {
 }
 
 /*
+
+                <Switch>
+                        <Route path='/public' render={() => <MenuPublic {...this.props}/>} />
+                        <Route path='/admin' render={() => <MenuAdmin {...this.props}/>} /> 
+                </Switch>
+
+
+
                 {autorized ? <MenuAdmin {...this.props} /> : <MenuPublic {...this.props}/> }
                 <Switch>
                         <Route path='/public' component={PublicContainer} />

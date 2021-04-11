@@ -42,6 +42,10 @@ class CaseDetailsContainer extends Component {
     checkInputsCorrection = () => {
         let errorsArray = [];
         let { date, ownerFullName, bikeType, color, licenseNumber, officer, description, resolution, status, hasOfficer} = this.props.store.case;
+        let approved = 'employee not chosen';
+        if (this.props.store.employees.employeesObject[officer]) {
+            approved = this.props.store.employees.employeesObject[officer].approved;
+        }
         if (date === '') {
             errorsArray.push('Не указана дата кражи велосипеда');
             changeInputStyle('#case-details-container__input-date', 'add', 'input_uncorrected');
@@ -62,8 +66,12 @@ class CaseDetailsContainer extends Component {
             errorsArray.push('Не указан номер велосипеда');
             changeInputStyle('#case-details-container__input-licenseNumber', 'add', 'input_uncorrected');
         }
-        if ( (hasOfficer === true) && (officer === undefined)) {
+        if ( (hasOfficer === true) && (officer === undefined) ) {
             errorsArray.push('Не указано ответственное лицо');
+            changeInputStyle('#case-details-container__input-officer', 'add', 'input_uncorrected');
+        }
+        if ( (hasOfficer === true) && (!approved) ) {
+            errorsArray.push('Ответственное лицо не одобрено');
             changeInputStyle('#case-details-container__input-officer', 'add', 'input_uncorrected');
         }
         if (description.length < 20) {
