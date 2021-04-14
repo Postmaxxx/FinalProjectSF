@@ -138,3 +138,23 @@
   /*  background-color: rgb(205, 227, 255);*/
 }
 
+.show-passwords-employee-container {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+
+.show-passwords-employee-icon {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    background: url(../../../../assets/images/icon-eye_open-blue-2.png);
+    background-size: contain;
+    position: absolute;
+    right: 15px;
+    top: -150px;
+}

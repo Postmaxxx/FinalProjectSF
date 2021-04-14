@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import TheftReportPage from './TheftReportPage.jsx';
 import axios from 'axios';
 import Modal from 'react-modal';
-import { changeInputStyle } from '../../Common/processors.js';
+import { changeInputStyle, checkContentType } from '../../Common/processors.js';
 import Preloader from '../../Common/Preloader.jsx';
 
 
@@ -79,22 +79,39 @@ class TheftReportPageContainer extends Component {
             errorsArray.push('Не указана дата кражи велосипеда');
             changeInputStyle('#theft-report-page__input-date', 'add', 'input_uncorrected');
         }
+        
         if (licenseNumber.length < 3) {
             errorsArray.push('Не указан номер велосипеда');
             changeInputStyle('#theft-report-page__input-licenceNumber', 'add', 'input_uncorrected');
         }
+        if (!checkContentType(licenseNumber, 'text+number')) {
+            errorsArray.push('Номер велосипеда указан неверно (разрешены только цифры и буквы)');
+            changeInputStyle('#case-details-container__input-licenseNumber', 'add', 'input_uncorrected');
+        }
+
         if (color.length < 3) {
             errorsArray.push('Не указан цвет велосипеда');
             changeInputStyle('#theft-report-page__input-color', 'add', 'input_uncorrected')
         }
+        if (!checkContentType(color, 'text+number')) {
+            errorsArray.push('Поле "цвет велосипеда" введено некорректно (разрешены только цифры и буквы)');
+            changeInputStyle('#case-details-container__input-color', 'add', 'input_uncorrected')
+        }
+
         if (bikeType === '') {
             errorsArray.push('Не выбран тип велосипеда');
             changeInputStyle('#theft-report-page__input-bikeType', 'add', 'input_uncorrected');
         }
+
         if (ownerFullName.length < 6) {
             errorsArray.push('ФИО владельца велосипеда слишком короткое');
             changeInputStyle('#theft-report-page__input-ownerFullName', 'add', 'input_uncorrected');
         }
+        if (!checkContentType(ownerFullName, 'text')) {
+            errorsArray.push('ФИО владельца введено некорректно (разрешены только буквы)');
+            changeInputStyle('#case-details-container__input-ownerFullName', 'add', 'input_uncorrected');
+        }
+
         if (description.length < 20) {
             errorsArray.push('Описание обстоятельст кражи и особых примет слишком короткое');
             changeInputStyle('#theft-report-page__input-description', 'add', 'input_uncorrected');
@@ -111,6 +128,7 @@ class TheftReportPageContainer extends Component {
         this.closeConfirmation();
         let errorsList = this.checkInputsCorrection();
         if (errorsList === 'None') {
+            console.log('ERRERS');
             this.submitForm();
         } else {
             alert('Обнаружены следующие ошибки при заполнении: ' + errorsList + 'Исправьте введенные даннные и попробуйте снова.');
@@ -120,6 +138,7 @@ class TheftReportPageContainer extends Component {
 
     submitForm = () => {
         let current_date = new Date().toISOString().split('T')[0];
+        console.log('current_date', current_date);
         let report_data = {
             status: 'new',
             date: this.props.store.case.date,
@@ -150,7 +169,7 @@ class TheftReportPageContainer extends Component {
         })
         .catch(error => {
             this.props.mainActions.setFetching('error', 'reportCase', `Произошла ошибка при отправке сообщения: ${error.response.status} ( ${error.message} )`);
-            alert('Ошибка при отправке отчета!' + error);
+            alert('Ошибка при отправке отчета!' + error.message);
         });
 
     }

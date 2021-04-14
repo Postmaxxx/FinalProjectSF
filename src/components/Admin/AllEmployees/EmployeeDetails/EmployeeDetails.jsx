@@ -4,8 +4,7 @@ import { BrowserRouter, Switch, Route, NavLink, withRouter } from 'react-router-
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import Confirmation from '../../../Common/Confirmation.jsx';
-import { changeInputStyle, transformInputValue } from '../../../Common/processors.js';
-
+import { changeInputStyle, transformInputValue, toggleElementAttribute, comparePasswords } from '../../../Common/processors.js';
 
 const EmployeeDetails = (props) => {
 
@@ -31,18 +30,28 @@ const EmployeeDetails = (props) => {
         let password = e.target.value;
         props.employeeActions.setPassword(password);
         changeInputStyle('#employee-details-container__input-password', 'remove', 'input_uncorrected');
+        comparePasswords(password, props.store.employee.rePassword, '#employee-details-container__input-repassword');
     };
 
     const onChangeRePassword = e => {
         let re_password = e.target.value;
         props.employeeActions.setRePassword(re_password);
         changeInputStyle('#employee-details-container__input-repassword', 'remove', 'input_uncorrected');
+        comparePasswords(props.store.employee.password, re_password, '#employee-details-container__input-repassword');
     };
 
     const onChangeApproved = e => {
         let approved = e.target.value;
         props.employeeActions.setApproved(transformInputValue(approved));
     };
+
+    
+    const onShowPasswordClick = () => {
+        changeInputStyle('.show-passwords-employee-icon', 'toggle', 'visiblePassword');
+        toggleElementAttribute('#employee-details-container__input-password', 'type', 'text', 'password');
+        toggleElementAttribute('#employee-details-container__input-repassword','type',  'text', 'password');
+    }
+
 
 
     return (
@@ -124,13 +133,17 @@ const EmployeeDetails = (props) => {
                         value={transformInputValue(props.store.employee.approved)}
                         onChange={onChangeApproved} 
                     >
-                        <option value={'No'}>Нет</option>    
-                        <option value={'Yes'}>Да</option>    
+                        <option value='No'>Нет</option>    
+                        <option value='Yes'>Да</option>    
                     </select>
                 </div>
                 
 
 
+            </div>
+
+            <div className='show-passwords-employee-container'>
+                    <div className='show-passwords-employee-icon' onClick={onShowPasswordClick}></div>
             </div>
 
 

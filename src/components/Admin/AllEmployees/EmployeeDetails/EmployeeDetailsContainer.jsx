@@ -31,8 +31,8 @@ class EmployeeDetailsContainer extends Component {
 
     onApplyDetailsButtonClick = () => {
         this.props.confirmationActions.setConfirmationMainText('Вы уверены, что хотите применить изменения?')
-        this.props.confirmationActions.setConfirmationLeftButtonText('Отмена');
-        this.props.confirmationActions.setConfirmationRightButtonText('Применить');
+        this.props.confirmationActions.setConfirmationLeftButtonText('Нет');
+        this.props.confirmationActions.setConfirmationRightButtonText('Да');
         this.props.confirmationActions.setConfirmationLeftButtonAction(() => this.closeConfirmation());
         this.props.confirmationActions.setConfirmationRightButtonAction(() => this.checkAndSendDetailsForm(false));
         this.props.confirmationActions.setShouldCloseOnOverlayClick(true);
@@ -195,6 +195,7 @@ class EmployeeDetailsContainer extends Component {
                   });*/
             })
         } else {
+            console.log('employee_corrected', employee_corrected);
             this.props.mainActions.setFetching('start', 'createEmployee', 'Созднание сотрудника...');
             axios.post('http://84.201.129.203:8888/api/officers', employee_corrected, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
@@ -208,7 +209,7 @@ class EmployeeDetailsContainer extends Component {
                         icon: "success",
                       });*/
                     this.applyChangesToArray(_id, employee_corrected);
-                    console.log('New Employee has been created!');
+                    console.log('New Employee has been created!', response.data );
                     if (shouldExit) {
                         this.closeDetails();
                     }

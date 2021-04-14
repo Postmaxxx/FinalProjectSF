@@ -92,55 +92,55 @@ const initialState = {
 
 function mainReducer(state = initialState, action) {
     switch (action.type) {
-        case 'CHANGE_FIRST_NAME':
+        case 'CHANGE_USER_FIRST_NAME':
             return {
                 ...state,
                 firstName: action.firstName
             };
-        case 'CHANGE_LAST_NAME':
+        case 'CHANGE_USER_LAST_NAME':
             return {
                 ...state,
                 lastName: action.lastName
             };
-        case 'CHANGE_EMAIL':
+        case 'CHANGE_USER_EMAIL':
             return {
                 ...state,
                 email: action.email
             };
 
-        case 'CHANGE_PASSWORD':
+        case 'CHANGE_USER_PASSWORD':
             return {
                 ...state,
                 password: action.password
             };
-        case 'CHANGE_REPASSWORD':
+        case 'CHANGE_USER_REPASSWORD':
             return {
                 ...state,
                 rePassword: action.rePassword
             };
-        case 'CHANGE_CLIENT_ID':
+        case 'CHANGE_USER_CLIENT_ID':
             return {
                 ...state,
                 clientId: action.clientId
             };
 
-        case 'CHANGE_AUTORIZATION_STATUS':
+        case 'CHANGE_USER_AUTORIZATION_STATUS':
             return {
                 ...state,
                 autorized: action.autorized
             };
-        case 'CHANGE_TOKEN':
+        case 'CHANGE_USER_TOKEN':
             return {
                 ...state,
                 token: action.token
             };
         
-        case 'SHOW_LOGIN_FORM':
+        case 'SHOW_USER_LOGIN_FORM':
             return {
                 ...state,
                 showLoginForm: action.showLoginForm
             }
-        case 'SHOW_REGISTRATION_FORM':
+        case 'SHOW_USER_REGISTRATION_FORM':
             return {
                 ...state,
                 showRegistrationForm: action.showRegistrationForm

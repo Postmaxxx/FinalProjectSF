@@ -3,19 +3,15 @@ import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 //import './MainPage.css';
 import store from '../../../redux/store';
 import { connect } from 'react-redux';
-
+import { changeInputStyle, toggleElementAttribute } from '../../Common/processors.js';
 
 
 const LoginPage = (props) => {
 
 
     const onShowPasswordClick = () => {
-        let showPassDiv = document.querySelector('.show-passwords-icon');
-        showPassDiv.classList.toggle('visiblePassword')
-        let passwordInput = document.querySelector('.password-input');
-        if (passwordInput.getAttribute('type') === 'password') {
-            passwordInput.setAttribute('type', 'text');
-        } else {passwordInput.setAttribute('type', 'password')};
+        changeInputStyle('.show-passwords-icon', 'toggle', 'visiblePassword');
+        toggleElementAttribute('.password-input', 'type', 'text', 'password');
     }
 
 

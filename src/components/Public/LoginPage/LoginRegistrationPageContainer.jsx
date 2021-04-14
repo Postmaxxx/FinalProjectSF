@@ -66,20 +66,22 @@ class LoginRegistrationPageContainer extends Component {
         this.props.mainActions.setFetching('start', 'logginIn', 'Загрузка...');
         axios.post('http://84.201.129.203:8888/api/auth/sign_in', logginUser)
         .then(response => {
+            console.log(response.data);
             this.props.mainActions.setFetching('success', 'logginIn',  'Logged in successfully.');
             localStorage.clear();
             localStorage.setItem('token', JSON.stringify(response.data.token));
+            localStorage.setItem('clientId', JSON.stringify(response.data.clientId));
             this.props.mainActions.setToken(response.data.token);
             this.props.mainActions.setClientId(response.data.clientId);
-            if (this.props.store.main.token) {
-                this.props.mainActions.setAutorized(true);
-                this.props.history.push('/admin/all_cases')
-                console.log('You have been autorized!');
-            }
+            //if (this.props.store.main.token) {
+            this.props.mainActions.setAutorized(true);
+            this.props.history.push('/admin/all_cases')
+            console.log('You have been autorized!');
+            //}
         })
         .catch(error => {
-            this.props.mainActions.setFetching('error', 'logginIn', `Произошла ошибка при загрузке случаев кражи: ${error.response.status} ( ${error.message} )`);
-            alert(error);
+            this.props.mainActions.setFetching('error', 'logginIn', `Произошла ошибка при входе: ${error.response.status} ( ${error.message} )`);
+            alert('Ошибка при входе!');
         })
 
     };
@@ -88,7 +90,35 @@ class LoginRegistrationPageContainer extends Component {
 
 
     onRegisterButtonClick = () => {
-        console.log('onRegistrationEnterButtonClick');
+        //console.log('onRegistrationEnterButtonClick');
+        console.log('Starting registration fetch...');
+        let registerUser = {
+            email: this.props.store.main.email,
+            password: this.props.store.main.password,
+            firstName: this.props.store.firstName,
+            lastName: this.props.store.lastName,
+            clientId: this.props.store.clientId
+        }
+        this.props.mainActions.setFetching('start', 'register', 'Регистрация...');
+        axios.post('http://84.201.129.203:8888/api/auth/sign_up', registerUser)
+        .then(response => {
+            console.log(response.data);
+            this.props.mainActions.setFetching('success', 'register',  'Registered successfully.');
+            localStorage.clear();
+            localStorage.setItem('token', JSON.stringify(response.data.token));
+            localStorage.setItem('clientId', JSON.stringify(response.data.clientId));
+            this.props.mainActions.setToken(response.data.token);
+            this.props.mainActions.setClientId(response.data.clientId);
+            //if (this.props.store.main.token) {
+            this.props.mainActions.setAutorized(true);
+            this.props.history.push('/admin/all_cases')
+            console.log('You have been registered!');
+            //}
+        })
+        .catch(error => {
+            this.props.mainActions.setFetching('error', 'register', `Произошла ошибка при регистрации: ${error.response.status} ( ${error.message} )`);
+            alert(error);
+        })
     }
 
 

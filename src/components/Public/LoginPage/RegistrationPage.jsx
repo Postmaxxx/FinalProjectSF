@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 //import './MainPage.css';
 import store from '../../../redux/store';
 import { connect } from 'react-redux';
-
+import { changeInputStyle, transformInputValue, toggleElementAttribute, comparePasswords } from '../../Common/processors.js';
 
 
 const RegistrationPage = (props) => {
@@ -24,24 +24,31 @@ const RegistrationPage = (props) => {
         props.mainActions.setEmail(email);
     }
 
+
+
     const onChangePassword = e => {
         let password = e.target.value;
         props.mainActions.setPassword(password);
-    }
+        comparePasswords(password, props.store.main.rePassword, '#register__input-repassword');
+    };
 
     const onChangeRePassword = e => {
-        let rePassword = e.target.value;
-        props.mainActions.setRePassword(rePassword);
-    }
+        let re_password = e.target.value;
+        props.mainActions.setRePassword(re_password);
+        comparePasswords(props.store.main.password, re_password, '#register__input-repassword');
+    };
+
 
     const onChangeClientID = e => {
         let clientID = e.target.value;
-        props.mainActions.setClientID(clientID);
+        props.mainActions.setClientId(clientID);
     }
 
-
-
-
+    const onShowPasswordClick = () => {
+        changeInputStyle('.show-passwords-register-icon', 'toggle', 'visiblePassword');
+        toggleElementAttribute('#register__input-password', 'type', 'text', 'password');
+        toggleElementAttribute('#register__input-repassword','type', 'text', 'password');
+    }
 
 
     return (
@@ -78,6 +85,7 @@ const RegistrationPage = (props) => {
                     <label className='log-reg-page-container__form-area__input_area__input_item__label'>Пароль</label>
                     <input 
                         className='log-reg-page-container__form-area__input_area__input_item__input'
+                        id='register__input-password'
                         type='password'
                         value={props.store.main.password}
                         onChange={onChangePassword}
@@ -87,6 +95,7 @@ const RegistrationPage = (props) => {
                     <label className='log-reg-page-container__form-area__input_area__input_item__label'>Пароль</label>
                     <input 
                         className='log-reg-page-container__form-area__input_area__input_item__input'
+                        id='register__input-repassword'
                         type='password'
                         value={props.store.main.rePassword}
                         onChange={onChangeRePassword}
@@ -100,6 +109,10 @@ const RegistrationPage = (props) => {
                         value={props.store.main.clientID}
                         onChange={onChangeClientID}
                     />
+                </div>
+
+                <div className='show-passwords-register-container'>
+                    <div className='show-passwords-register-icon' onClick={onShowPasswordClick}></div>
                 </div>
             </div>
         </div>

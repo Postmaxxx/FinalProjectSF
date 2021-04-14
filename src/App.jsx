@@ -28,6 +28,8 @@ class App extends Component {
         console.log('this ', this);
         let token = JSON.parse(localStorage.getItem('token'));
         this.props.mainActions.setToken(token);
+        let clientId = JSON.parse(localStorage.getItem('clientId'));
+        this.props.mainActions.setClientId(clientId);
         if (token) {
             this.props.mainActions.setAutorized(true);
             this.props.history.push('/admin/all_cases')

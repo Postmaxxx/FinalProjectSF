@@ -1,41 +1,41 @@
 export const setFirstName = firstName => {
     return { 
-        type: 'CHANGE_FIRST_NAME',
+        type: 'CHANGE_USER_FIRST_NAME',
         firstName
     };
 };
 
 export const setLastName = lastName => { 
     return { 
-        type: 'CHANGE_LAST_NAME',
+        type: 'CHANGE_USER_LAST_NAME',
         lastName
     };
 };
 
 export const setEmail = email => {
     return { 
-        type: 'CHANGE_EMAIL',
+        type: 'CHANGE_USER_EMAIL',
         email
     };
 };
 
 export const setPassword = password => {
     return { 
-        type: 'CHANGE_PASSWORD',
+        type: 'CHANGE_USER_PASSWORD',
         password
     };
 };
 
 export const setRePassword = rePassword => {
     return { 
-        type: 'CHANGE_REPASSWORD',
+        type: 'CHANGE_USER_REPASSWORD',
         rePassword
     };
 };
 
 export const setClientId = clientId => {
     return { 
-        type: 'CHANGE_CLIENT_ID',
+        type: 'CHANGE_USER_CLIENT_ID',
         clientId
     };
 };
@@ -43,14 +43,14 @@ export const setClientId = clientId => {
 
 export const setAutorized = autorized => {
     return { 
-        type: 'CHANGE_AUTORIZATION_STATUS',
+        type: 'CHANGE_USER_AUTORIZATION_STATUS',
         autorized
     };
 };
 
 export const setToken = token => {
     return { 
-        type: 'CHANGE_TOKEN',
+        type: 'CHANGE_USER_TOKEN',
         token
     };
 };
@@ -58,14 +58,14 @@ export const setToken = token => {
 
 export const setShowLoginForm = showLoginForm => {
         return {
-            type: 'SHOW_LOGIN_FORM',
+            type: 'SHOW_USER_LOGIN_FORM',
             showLoginForm
         }
 };
 
 export const setShowRegistrationForm = showRegistrationForm => {
         return {
-            type: 'SHOW_REGISTRATION_FORM',
+            type: 'SHOW_USER_REGISTRATION_FORM',
             showRegistrationForm
         }
 };

@@ -4,7 +4,7 @@ import './CaseDetails.css';
 import { connect } from 'react-redux';
 import CaseDetails from './CaseDetails.jsx';
 import axios from 'axios';
-import { changeInputStyle } from '../../../Common/processors.js'
+import { changeInputStyle, checkContentType } from '../../../Common/processors.js'
 import Preloader from '../../../Common/Preloader.jsx';
 
 class CaseDetailsContainer extends Component {
@@ -43,7 +43,7 @@ class CaseDetailsContainer extends Component {
     checkInputsCorrection = () => {
         let errorsArray = [];
         let { date, ownerFullName, bikeType, color, licenseNumber, officer, description, resolution, status, hasOfficer} = this.props.store.case;
-        let approved = 'employee not chosen';
+        let approved = false;
         if (this.props.store.employees.employeesObject[officer]) {
             approved = this.props.store.employees.employeesObject[officer].approved;
         }
@@ -51,22 +51,39 @@ class CaseDetailsContainer extends Component {
             errorsArray.push('Не указана дата кражи велосипеда');
             changeInputStyle('#case-details-container__input-date', 'add', 'input_uncorrected');
         }
+        
         if (ownerFullName.length < 6) {
             errorsArray.push('ФИО владельца велосипеда слишком короткое');
             changeInputStyle('#case-details-container__input-ownerFullName', 'add', 'input_uncorrected');
         }
+        if (!checkContentType(ownerFullName, 'text')) {
+            errorsArray.push('ФИО владельца введено некорректно');
+            changeInputStyle('#case-details-container__input-ownerFullName', 'add', 'input_uncorrected');
+        }
+
         if (bikeType === '') {
             errorsArray.push('Не выбран тип велосипеда');
             changeInputStyle('#case-details-container__input-bikeType', 'add', 'input_uncorrected');
         }
+        
         if (color.length < 3) {
-            errorsArray.push('Не указан цвет велосипеда');
+            errorsArray.push('Поле "цвет велосипеда" слишком короткое');
             changeInputStyle('#case-details-container__input-color', 'add', 'input_uncorrected')
         }
+        if (!checkContentType(color, 'text+number')) {
+            errorsArray.push('Поле "цвет велосипеда" введено некорректно');
+            changeInputStyle('#case-details-container__input-color', 'add', 'input_uncorrected')
+        }
+
         if (licenseNumber.length < 3) {
             errorsArray.push('Не указан номер велосипеда');
             changeInputStyle('#case-details-container__input-licenseNumber', 'add', 'input_uncorrected');
         }
+        if (!checkContentType(licenseNumber, 'text+number')) {
+            errorsArray.push('Номер велосипеда указан неверно (разрешены только цифры и буквы)');
+            changeInputStyle('#case-details-container__input-licenseNumber', 'add', 'input_uncorrected');
+        }
+
         if ( (hasOfficer === true) && (officer === undefined) ) {
             errorsArray.push('Не указано ответственное лицо');
             changeInputStyle('#case-details-container__input-officer', 'add', 'input_uncorrected');
@@ -97,7 +114,7 @@ class CaseDetailsContainer extends Component {
         if (errorsList === 'None') {
             this.applyDetails(shouldExit);
         } else {
-            alert('Обнаружены следующие ошибки при заполнении: ' + errorsList + 'Исправьте введенные даннные и попробуйте снова.');
+            alert('Обнаружены следующие ошибки при заполнении: ' + errorsList + '. Исправьте введенные даннные и попробуйте снова.');
         }
     }
 
@@ -129,8 +146,8 @@ class CaseDetailsContainer extends Component {
     }
 
 
-    applyChangesToArray = (current_id, case_corrected) => { // неопримизированный вариант, дело все-равно сначала ищется в базе, и только если нет - добавляется. Но зато универсальнее        let itemInArray = false; //флаг, что дело с данным current_id уже в базе
-        let itemInArray = false; 
+    applyChangesToArray = (current_id, case_corrected) => { // неопримизированный вариант, дело все-равно сначала ищется в базе, и только если нет - добавляется. Но зато универсальный      
+        let itemInArray = false;   //флаг, что дело с данным current_id уже в базе
         let new_cases_array = this.props.store.cases.casesArray.map(item => { //Поиск дела в базе по _id и коррекция дела, если оно есть
             if (item._id === current_id) { 
                 itemInArray = true; 
@@ -161,9 +178,8 @@ class CaseDetailsContainer extends Component {
         this.props.casesActions.setCasesArray(new_cases_array);
     }
 
-
+    
     applyDetails = (shouldExit) => { 
-        //this.closeConfirmation();
         let _id = this.props.store.cases.detailedCaseId;
         let token = this.props.store.main.token;
         let current_date = new Date().toISOString().split('T')[0];
@@ -182,7 +198,7 @@ class CaseDetailsContainer extends Component {
             resolution: this.props.store.case.resolution
         }
         if (_id) {
-            this.props.mainActions.setFetching('start', 'updateCase', 'Редактирование дела...');
+           this.props.mainActions.setFetching('start', 'updateCase', 'Редактирование дела...');
             axios.put(`http://84.201.129.203:8888/api/cases/${_id}`, case_corrected, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
                 if (response.status === 200) {
@@ -260,13 +276,13 @@ class CaseDetailsContainer extends Component {
         let create_fetching = this.props.store.main.fetching.createCase.isFetching;
         let update_fetching = this.props.store.main.fetching.updateCase.isFetching;
         let delete_fetching = this.props.store.main.fetching.deleteCase.isFetching;
-        //console.log(delete_fetching);
         return (
                 <>
                 {create_fetching && <Preloader {...this.props} preloaderText='Создание делa...' marginTop='200px' marginLeft='auto'/> }
                 {update_fetching && <Preloader {...this.props} preloaderText='Редактирование делa...' marginTop='200px' marginLeft='auto'/> }
                 {delete_fetching && <Preloader {...this.props} preloaderText='Удаление делa...' marginTop='200px' marginLeft='auto'/> }
-                {create_fetching || update_fetching || delete_fetching ||
+               
+                {create_fetching || update_fetching || delete_fetching || // если нет никаких preloader
                 <CaseDetails 
                     {...this.props} 
                     onApplyDetailsButtonClick={this.onApplyDetailsButtonClick}

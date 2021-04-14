@@ -52,3 +52,7 @@ h1, h2, p, a {
     transition: 0.5s;
 }
 
+.input_similar {
+    background-color:rgb(221, 255, 221);
+    transition: 0.5s;
+}

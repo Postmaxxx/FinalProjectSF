@@ -102,6 +102,9 @@ class AllEmployeesContainer extends Component {
                     style={{
                         overlay: {
                             backgroundColor: 'rgba(255, 255, 255, 0.9)'
+                        },
+                        content: {
+                            outline: 'none'
                         }
                     }}
                     >

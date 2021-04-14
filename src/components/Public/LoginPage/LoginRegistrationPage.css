@@ -84,7 +84,6 @@
 
 .show-passwords-container {
     width: 100%;
-    /*height: 30px;*/
     margin-top: 10px;
     display: flex;
     align-items: center;
@@ -105,9 +104,6 @@
 }
 
 
-.visiblePassword {
-   background-color: #FFF;
-}
 
 .log-reg-page-container__buttons-area {
     margin-top: 10px;
@@ -128,3 +124,28 @@
     border: 0px solid #000;
 }
 
+.show-passwords-register-container {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+
+.show-passwords-register-icon {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    background: url(../../../assets/images/icon-eye_open-blue-2.png);
+    background-size: contain;
+    position: absolute;
+    right: -32px;
+    top: -95px;
+}
+
+
+.visiblePassword {
+    background-color: #FFF;
+ }

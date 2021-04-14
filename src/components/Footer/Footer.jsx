@@ -24,10 +24,14 @@ const Footer = (props) => {
     let logoff_style = 'footer__navigation__item__button footer__navigation__item__button__logoff';
 
     const logoff = () => {
-        props.mainActions.setAutorized(false);
-        props.mainActions.setToken('');
-        JSON.stringify(localStorage.clear());
-        props.history.push('/public/mainpage')
+        let response = confirm('Вы уверены, что хотите выйти?')
+        if (response) {
+            props.mainActions.setAutorized(false);
+            props.mainActions.setToken('');
+            JSON.stringify(localStorage.clear());
+            props.history.push('/public/mainpage')
+            console.log('You have been unauthorized!');
+        }
         console.log('You have been unauthorized!');
     }
 

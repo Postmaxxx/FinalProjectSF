@@ -131,8 +131,8 @@ class AllCasesContainer extends Component {
                             backgroundColor: 'rgba(255, 255, 255, 0.9)'
                         },
                         content: {
-
-                          }
+                            outline: 'none'
+                        }
                     }}
                     >
                     {this.props.store.main.fetching.getDetailedCase.isFetching ? <Preloader {...this.props} preloaderText='Загрузка делa...' marginTop='200px' marginLeft='auto'/> 

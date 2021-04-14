@@ -16,67 +16,67 @@ const initialState = {
 
 function caseReducer(state = initialState, action) {
     switch (action.type) {
-        case 'CHANGE_STATUS':
+        case 'CHANGE_CASE_STATUS':
             return {
                 ...state,
                 status: action.status
         };
-        case 'CHANGE_DATE':
+        case 'CHANGE_CASE_DATE':
             return {
                 ...state,
                 date: action.date
         };
-        case 'CHANGE_LICENSE_NUMBER':
+        case 'CHANGE_CASE_LICENSE_NUMBER':
             return {
                 ...state,
                 licenseNumber: action.licenseNumber
         };
-        case 'CHANGE_COLOR':
+        case 'CHANGE_CASE_COLOR':
             return {
                 ...state,
                 color: action.color
         };
-        case 'CHANGE_TYPE':
+        case 'CHANGE_CASE_TYPE':
             return {
                 ...state,
                 bikeType: action.bikeType
         };
-        case 'CHANGE_OWNER_FULLNAME':
+        case 'CHANGE_CASE_OWNER_FULLNAME':
             return {
                 ...state,
                 ownerFullName: action.ownerFullName
         };
-        case 'CHANGE_OFFICER':
+        case 'CHANGE_CASE_OFFICER':
             return {
                 ...state,
                 officer: action.officer
         };
-        case 'CHANGE_CREATED_AT':
+        case 'CHANGE_CASE_CREATED_AT':
             return {
                 ...state,
                 createdAt: action.createdAt
         };
-        case 'CHANGE_UPDATE_AT':
+        case 'CHANGE_CASE_UPDATE_AT':
             return {
                 ...state,
                 updateAt: action.updateAt
         };
-        case 'CHANGE_CLIENT_ID':
+        case 'CHANGE_CASE_CLIENT_ID':
             return {
                 ...state,
                 clientId: action.clientId
         };
-        case 'CHANGE_DESCRIPTION':
+        case 'CHANGE_CASE_DESCRIPTION':
             return {
                 ...state,
                 description: action.description
         };
-        case 'CHANGE_RESOLUTION':
+        case 'CHANGE_CASE_RESOLUTION':
             return {
                 ...state,
                 resolution: action.resolution
         };
-        case 'CHANGE_HAS_OFFICER':
+        case 'CHANGE_CASE_HAS_OFFICER':
             return {
                 ...state,
                 hasOfficer: action.hasOfficer

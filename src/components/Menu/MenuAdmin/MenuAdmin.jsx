@@ -8,18 +8,15 @@ import { connect } from 'react-redux';
 const MenuAdmin = (props) => {
 
     const onButtonExitClick = () => {
-        props.mainActions.setAutorized(false);
-        props.mainActions.setToken('');
-        JSON.stringify(localStorage.clear());
-        props.history.push('/public/mainpage')
+        let response = confirm('Вы уверены, что хотите выйти?')
+        if (response) {
+            props.mainActions.setAutorized(false);
+            props.mainActions.setToken('');
+            JSON.stringify(localStorage.clear());
+            props.history.push('/public/mainpage')
+        }
         console.log('You have been unauthorized!');
     }
-
-/*
-    const changePage = () => {
-        //props.mainActions.setFetching('clear');
-    }
-*/
 
     return (
         <div className='menu-admin'>
