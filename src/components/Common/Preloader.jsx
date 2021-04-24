@@ -1,6 +1,5 @@
 import './Preloader.css';
 import React, { Component } from 'react';
-import styled, { keyframes } from 'styled-components'
 
 const Preloader = (props) => {
     let style = {

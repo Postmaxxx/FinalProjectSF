@@ -7,17 +7,19 @@ import Preloader from '../../Common/Preloader.jsx';
 
 
 const AllCases = (props) => {
-
     let cases_array = props.store.cases.casesArray;
-    let cases_list = cases_array.map((item) => {
-        
-        let firstName = undefined;
-        let lastName = undefined; 
 
-            if(props.store.employees.employeesObject[item.officer]) {
-                firstName = props.store.employees.employeesObject[item.officer].firstName;
-                lastName = props.store.employees.employeesObject[item.officer].lastName;
-            }
+    let cases_list = cases_array.map((item) => {
+        let officerID = item.officer; //ID назначенного сотрудника
+        let firstName = undefined; //По умолчанию сотрудника нет в базе
+        let lastName = undefined; 
+        
+        if (props.store.employees.employeesArray.findById(officerID)) { //Если сотрудник есть в базе
+            firstName = props.store.employees.employeesArray.findById(officerID).firstName; //ищем по ID в employeesArray
+            lastName = props.store.employees.employeesArray.findById(officerID).lastName;
+        }
+        
+
 
         return (
             <tr className='cases-table__data' _id={item._id} key={item._id}>
@@ -35,7 +37,7 @@ const AllCases = (props) => {
 
 
 
-                <td>{item.officer === undefined ? 'Не назначен'
+                <td>{officerID === undefined ? 'Не назначен'
                 : firstName === undefined ? 'Нет в базе'
                 : `${firstName} ${lastName}`
                 }</td>
@@ -56,7 +58,13 @@ const AllCases = (props) => {
         )
     })
 
+   /*
    
+                <td>{item.officer === undefined ? 'Не назначен'
+                : firstName === undefined ? 'Нет в базе'
+                : `${firstName} ${lastName}`
+                }</td>
+   */
     
 
     return (

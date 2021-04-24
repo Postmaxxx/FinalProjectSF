@@ -43,10 +43,14 @@ class CaseDetailsContainer extends Component {
     checkInputsCorrection = () => {
         let errorsArray = [];
         let { date, ownerFullName, bikeType, color, licenseNumber, officer, description, resolution, status, hasOfficer} = this.props.store.case;
-        let approved = false;
-        if (this.props.store.employees.employeesObject[officer]) {
-            approved = this.props.store.employees.employeesObject[officer].approved;
+        let approved;// = false;
+
+
+        let officerExist = this.props.store.employees.employeesArray.isExist(officer);
+        if (officerExist) {
+            approved = this.props.store.employees.employeesArray.findById(officer).approved;
         }
+
         if (date === '') {
             errorsArray.push('Не указана дата кражи велосипеда');
             changeInputStyle('#case-details-container__input-date', 'add', 'input_uncorrected');
@@ -70,7 +74,7 @@ class CaseDetailsContainer extends Component {
             errorsArray.push('Поле "цвет велосипеда" слишком короткое');
             changeInputStyle('#case-details-container__input-color', 'add', 'input_uncorrected')
         }
-        if (!checkContentType(color, 'text+number')) {
+        if (!checkContentType(color, 'text')) {
             errorsArray.push('Поле "цвет велосипеда" введено некорректно');
             changeInputStyle('#case-details-container__input-color', 'add', 'input_uncorrected')
         }
@@ -83,23 +87,26 @@ class CaseDetailsContainer extends Component {
             errorsArray.push('Номер велосипеда указан неверно (разрешены только цифры и буквы)');
             changeInputStyle('#case-details-container__input-licenseNumber', 'add', 'input_uncorrected');
         }
-
+        
         if ( (hasOfficer === true) && (officer === undefined) ) {
             errorsArray.push('Не указано ответственное лицо');
             changeInputStyle('#case-details-container__input-officer', 'add', 'input_uncorrected');
         }
-        if ( (hasOfficer === true) && (!approved) ) {
+        if ( (officerExist) && (!approved) ) {
             errorsArray.push('Ответственное лицо не одобрено');
             changeInputStyle('#case-details-container__input-officer', 'add', 'input_uncorrected');
         }
+
         if (description.length < 20) {
             errorsArray.push('Описание обстоятельст кражи и особых примет слишком короткое');
             changeInputStyle('#case-details-container__input-description', 'add', 'input_uncorrected');
         }
-        if ((status === 'done')&&(resolution.length < 20)) {
+        if ( (status === 'done') && (resolution.length < 20) ) {
             errorsArray.push('Описание заключения слишком короткое');
             changeInputStyle('#case-details-container__input-resolution', 'add', 'input_uncorrected');
         }
+
+
         if (errorsArray.length === 0) {
             return 'None';
         } else { 
@@ -183,6 +190,7 @@ class CaseDetailsContainer extends Component {
         let _id = this.props.store.cases.detailedCaseId;
         let token = this.props.store.main.token;
         let current_date = new Date().toISOString().split('T')[0];
+      /*  
         let case_corrected = {
             status: this.props.store.case.status,
             date: this.props.store.case.date,
@@ -197,6 +205,17 @@ class CaseDetailsContainer extends Component {
             description: this.props.store.case.description,
             resolution: this.props.store.case.resolution
         }
+*/
+        let case_corrected = {
+            ...this.props.store.case,
+            updateAt: current_date,
+            type: this.props.store.case.bikeType,
+        };
+        delete case_corrected.bikeType;
+        delete case_corrected.hasOfficer;
+        console.log('case_corrected=',case_corrected);
+
+
         if (_id) {
            this.props.mainActions.setFetching('start', 'updateCase', 'Редактирование дела...');
             axios.put(`http://84.201.129.203:8888/api/cases/${_id}`, case_corrected, {headers: {'Authorization': `Bearer ${token}`}})
@@ -205,7 +224,10 @@ class CaseDetailsContainer extends Component {
                     this.props.mainActions.setFetching('success', 'updateCase', 'Редактирование дела успешно завершено!');
                     console.log('Case has been changed sucessfully!');
                     this.applyChangesToArray(_id, case_corrected);
-                    if (response.data.officer !== undefined) {
+                    /*if (response.data.officer !== undefined) {
+                        this.props.caseActions.setHasOfficer(true);
+                    }*/
+                    if (!this.props.store.case.hasOfficer && this.props.store.case.officer) {
                         this.props.caseActions.setHasOfficer(true);
                     }
                     if (shouldExit) {
@@ -224,12 +246,18 @@ class CaseDetailsContainer extends Component {
                 if (response.status===200) {
                     this.props.mainActions.setFetching('success', 'createCase', 'Создание дела успешно завершено!');
                     let current_id = response.data._id;
-                    console.log('Case has been added sucessfully!');
+                    console.log('Case has been added sucessfully!', response.data);
                     this.props.casesActions.setDetailedCaseId(_id);
                     this.applyChangesToArray(current_id, case_corrected);
-                    if (response.data.officer !== undefined) {
+
+                    if (this.props.store.case.officer) {
                         this.props.caseActions.setHasOfficer(true);
                     }
+
+
+/*                    if (response.data.officer !== undefined) {
+                        this.props.caseActions.setHasOfficer(true);
+                    }*/
                     if (shouldExit) {
                         this.closeDetails();
                     }

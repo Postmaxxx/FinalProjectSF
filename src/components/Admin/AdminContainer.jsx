@@ -5,6 +5,7 @@ import axios from 'axios';
 import AllCasesContainer from './AllCases/AllCasesContainer.jsx';
 import AllEmployeesContainer from './AllEmployees/AllEmployeesContainer.jsx';
 import './AdminContainer.css';
+import { IndexedEmployeeArray } from '../Common/processors.js';
 
 
 class AdminContainer extends Component {
@@ -38,12 +39,18 @@ class AdminContainer extends Component {
                 axios.get('http://84.201.129.203:8888/api/officers ', {headers: {'Authorization': `Bearer ${token}`}})
                 .then(response => {
                     if (response.status === 200) {
-                        this.props.employeesActions.setEmployeesArray(response.data);
+
+                        //*********
+                        let newEmployeesArray = new IndexedEmployeeArray(response.data)
+                        this.props.employeesActions.setEmployeesArray(newEmployeesArray);
+
+                        //************* */
+                        //this.props.employeesActions.setEmployeesArray(response.data);
                         this.props.mainActions.setFetching('success', 'receiveEmployees', 'All employees has been received.');
                         console.log('All employees data received!');
-
+                        /*
                         let employeesObject = {};
-                        this.props.store.employees.employeesArray.map((item) => {
+                        this.props.store.employees.employeesArray.forEach((item) => {
                             employeesObject[item._id] = {
                                 firstName: item.firstName,
                                 lastName: item.lastName,
@@ -51,6 +58,7 @@ class AdminContainer extends Component {
                                 }
                         } );
                         this.props.employeesActions.setEmployeesObject(employeesObject);
+                        */
                     }
                 })
                 .catch(error => {

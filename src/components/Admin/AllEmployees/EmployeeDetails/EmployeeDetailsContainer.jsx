@@ -116,20 +116,26 @@ class EmployeeDetailsContainer extends Component {
     }
 
 
-
+/*
     applyChangesToArray = (current_id, employee_corrected) => { // неопримизированный вариант, дело все-равно сначала ищется в базе, и только если нет - добавляется. Но зато универсальнее        let itemInArray = false; //флаг, что дело с данным current_id уже в базе
-        let itemInArray = false; 
-        let new_employees_array = this.props.store.employees.employeesArray.map(item => { //Поиск дела в базе по _id и коррекция дела, если оно есть
+        let employeeInArray = this.props.store.employees.employeesArray.exist(current_id'fdsgf');
+        if (employeeInArray) {
+            
+        } else {
+            this.props.store.employees.employeesArray.addToEnd(employee_corrected);
+        }
+        /*let itemInArray = false; 
+        let new_employees_array = this.props.store.employees.employeesArray.map(item => { //Поиск сотрудника в базе по _id и коррекция дела, если оно есть
             if (item._id === current_id) { 
                 itemInArray = true; 
-                return ({ //добавляем поле _id к case_corrected
+                return ({ //добавляем поле _id к employee_corrected
                     ...employee_corrected,
                     _id: current_id,
                 })
             } else return item;
         });
         if (!itemInArray) { 
-            let newEmployee = { //добавляем поле _id к case_corrected
+            let newEmployee = { //добавляем поле _id к employee_corrected
                 ...employee_corrected,
                 _id: current_id,
             }
@@ -138,33 +144,24 @@ class EmployeeDetailsContainer extends Component {
         } 
         console.log(new_employees_array);
         this.props.employeesActions.setEmployeesArray(new_employees_array);
-    }
+    }*/
 
 
 
-    deleteEmployeeFromArray = (current_id) => {
-        let itemIndex = this.props.store.employees.employeesArray.findIndex((item, index) => {
-            console.log(current_id);
-            return current_id===item._id
-        })
-        let new_employees_array = this.props.store.employees.employeesArray;
-        new_employees_array.splice(itemIndex, 1);
-        this.props.employeesActions.setEmployeesArray(new_employees_array);
-    }
+
 
 
     applyDetails = (shouldExit) => {
         this.closeConfirmation();
         let _id = this.props.store.employees.detailedEmployeeId;
         let token = this.props.store.main.token;
-        let employee_corrected = {
+        let employee_corrected = { //Здесь добавлять _id нельзя, иначе добавление нового сотрудника крашится, оно должно быть без ID
             email: this.props.store.employee.email,
             firstName: this.props.store.employee.firstName,
             lastName: this.props.store.employee.lastName,
             password: this.props.store.employee.password,
-            //rePassword: this.props.store.employee.rePassword,
             clientId: this.props.store.main.clientId,
-            approved: this.props.store.employee.approved,
+            approved: this.props.store.employee.approved 
         }
         //console.log(employee_corrected);
         if (_id) {
@@ -178,7 +175,10 @@ class EmployeeDetailsContainer extends Component {
                         icon: "success",
                       });*/
                     this.props.mainActions.setFetching('success', 'updateEmployee', 'Редактирование сотрудника успешно завершено!');
-                    this.applyChangesToArray(_id, employee_corrected);
+                    //this.applyChangesToArray(_id, employee_corrected);
+                    employee_corrected._id = _id; //добавляем поле _id
+                    this.props.employeesActions.setEditEmployee(employee_corrected);
+
                     console.log('Employee has been changed sucessfully!');
                     if (shouldExit) {
                         this.closeDetails();
@@ -186,8 +186,9 @@ class EmployeeDetailsContainer extends Component {
                 }
             })
             .catch(error => {
+                console.log(error);
                 this.props.mainActions.setFetching('error', 'updateEmployee', `Произошла ошибка при редактировании сотрудника: ${error.response.status} ( ${error.message} )`);
-                //alert(`Произошла ошибка: ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
+                alert(`Произошла ошибка: ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
                 /*swal({
                     title: "Ошибка!",
                     text: `Сервер сообщил об ошибке ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`,
@@ -208,7 +209,9 @@ class EmployeeDetailsContainer extends Component {
                         text: "Вы успешно добавили сотрудника.",
                         icon: "success",
                       });*/
-                    this.applyChangesToArray(_id, employee_corrected);
+                    //***this.applyChangesToArray(_id, employee_corrected);
+                    employee_corrected._id = _id; //добавляем поле _id
+                    this.props.employeesActions.setAddEmployeeToEnd(employee_corrected);
                     console.log('New Employee has been created!', response.data );
                     if (shouldExit) {
                         this.closeDetails();
@@ -217,18 +220,35 @@ class EmployeeDetailsContainer extends Component {
             })
             .catch(error => {
                 this.props.mainActions.setFetching('error', 'createEmployee', `Произошла ошибка при создании сотрудника: ${error.response.status} ( ${error.message} )`);
-                //alert(`Произошла ошибка: ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
+                alert(`Произошла ошибка: ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
             });
         };
     }
 
-
-
+/*
+    deleteEmployeeFromArray = (current_id) => {
+        let itemIndex = this.props.store.employees.employeesArray.findIndex((item, index) => {
+            console.log(current_id);
+            return current_id===item._id
+        })
+        let new_employees_array = this.props.store.employees.employeesArray;
+        new_employees_array.splice(itemIndex, 1);
+        this.props.employeesActions.setEmployeesArray(new_employees_array);
+    }
+*/
 
     deleteEmployee = () => {
         let _id = this.props.store.employees.detailedEmployeeId;
 
         if (_id) {
+            //************ */
+            //console.log('BASE: ', this.props.store.employees.employeesArray);
+            //this.props.store.employees.employeesArray.del(_id);
+            //console.log('_id, DELETE: ', _id, this.props.store.employees);
+            //**************** */
+
+            //this.props.employeesActions.setDeleteEmployeeById(_id);
+
             let token = this.props.store.main.token;
             this.props.mainActions.setFetching('start', 'deleteEmployee', 'Удаление сотрудника...');
             axios.delete(`http://84.201.129.203:8888/api/officers/${_id}`, {headers: {'Authorization': `Bearer ${token}`}})
@@ -237,7 +257,8 @@ class EmployeeDetailsContainer extends Component {
                     this.props.mainActions.setFetching('success', 'deleteEmployee', 'Удаление сотрудника успешно завершено...');
                     //alert('Employee has been deleted sucessfully!');
                     //this.props.receiveCasesEmployees({ cases: false, employees: true });
-                    this.deleteEmployeeFromArray(_id);
+                    //this.deleteEmployeeFromArray(_id);
+                    this.props.employeesActions.setDeleteEmployeeById(_id);
                     this.closeDetails();
                 }
             })
@@ -245,6 +266,7 @@ class EmployeeDetailsContainer extends Component {
                 this.props.mainActions.setFetching('error', 'deleteEmployee', `Произошла ошибка при удалении сотрудника: ${error.response.status} ( ${error.message} )`);
                 alert(`Произошла ошибка: ${error.status} ( ${error.message} )`);
             });
+            
         }
         this.closeConfirmation();
     }

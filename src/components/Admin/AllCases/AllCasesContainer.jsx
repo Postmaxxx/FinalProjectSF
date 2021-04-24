@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import AllCases from './AllCases.jsx';
 import CaseDetailsContainer from './CaseDetails/CaseDetailsContainer.jsx'
 import axios from 'axios';
+import { IndexedArray } from '../../Common/processors.js';
 
 import Modal from 'react-modal';
 
@@ -103,8 +104,10 @@ class AllCasesContainer extends Component {
     }
 
     preloaderTest = () => {
-        this.props.mainActions.setFetching('start', 'receiveCases', 'nothing');
-        console.log('main = ', this.props.store.main);
+        //this.props.mainActions.setFetching('start', 'receiveCases', 'nothing');
+        console.log('main = ', this.props.store.employees);
+        console.log('!', this.props.store.employees.employeesArray[1]);
+        console.log('findById', this.props.store.employees.employeesArray.findById('60692c2e0bd7590011f3abc5'));
     }
 
 
