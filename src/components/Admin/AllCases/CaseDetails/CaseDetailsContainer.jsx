@@ -167,7 +167,7 @@ class CaseDetailsContainer extends Component {
         let itemIndex = this.props.store.cases.casesArray.findIndex((item) => {
             return currentId===item._id
         })
-        let newCasesArray = this.props.store.cases.casesArray;
+        let newCasesArray = [...this.props.store.cases.casesArray];
         newCasesArray.splice(itemIndex, 1);
         this.props.casesActions.setCasesArray(newCasesArray);
     }
@@ -235,7 +235,6 @@ class CaseDetailsContainer extends Component {
         let _id = this.props.store.cases.detailedCaseId;
         if (_id) {
             let token = this.props.store.main.token;
-            this.deleteCaseFromArray(_id);
             this.props.mainActions.setFetching('start', 'deleteCase');
             axios.delete(`http://84.201.129.203:8888/api/cases/${_id}`, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
