@@ -5,6 +5,7 @@ const initialState = {
     detailedCaseHeaderText: ''
 };
 
+
 function casesReducer(state = initialState, action) {
     switch (action.type) {
         case 'CHANGE_CASES_ARRAY':
@@ -30,5 +31,6 @@ function casesReducer(state = initialState, action) {
         default: return state;
     }
 }
+
 
 export default casesReducer;

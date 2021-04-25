@@ -1,4 +1,0 @@
-    componentDidMount() {
-        let current_date = new Date().toISOString().split('T')[0];
-        this.props.setDate(current_date);
-    }

@@ -1,8 +1,5 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React from 'react';
 import './Footer.css';
-
 
 
 const Footer = (props) => {
@@ -23,6 +20,7 @@ const Footer = (props) => {
     let all_employees_selected_style = 'footer__navigation__item__button footer__navigation__item__button__all_employees button_selected';
     let logoff_style = 'footer__navigation__item__button footer__navigation__item__button__logoff';
 
+
     const logoff = () => {
         let response = confirm('Вы уверены, что хотите выйти?')
         if (response) {
@@ -30,13 +28,11 @@ const Footer = (props) => {
             props.mainActions.setToken('');
             JSON.stringify(localStorage.clear());
             props.history.push('/public/mainpage')
-            console.log('You have been unauthorized!');
         }
-        console.log('You have been unauthorized!');
     }
 
 
-    const footer_public = () => {
+    const footerPublic = () => { //Footer для неавторизованных
         return(
             <>
                 <button 
@@ -56,7 +52,7 @@ const Footer = (props) => {
     }
 
 
-    const footer_admin = () => {
+    const footerAdmin = () => {//Footer для авторизованных
         return(
             <>
                 <button 
@@ -76,13 +72,14 @@ const Footer = (props) => {
     }
 
 
+
     return (
         <div className='footer'>
             <div className='footer__logo-info'>
                 <p>© PostMaxxx</p>
             </div>
             <div className='footer__navigation'>
-                {autorized ? footer_admin() : footer_public()}
+                {autorized ? footerAdmin() : footerPublic()}
             </div> 
             <div className='footer__date'>
                 <p>2021</p>
@@ -90,7 +87,6 @@ const Footer = (props) => {
         </div>
     )
 }
-
 
 
 export default Footer;

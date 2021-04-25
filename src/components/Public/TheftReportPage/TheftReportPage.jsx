@@ -1,13 +1,8 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
-//import './TheftReport.css';
-import store from '../../../redux/store';
-import { connect } from 'react-redux';
+import React from 'react';
 import './TheftReportPage.css';
 import Confirmation from '../../Common/Confirmation.jsx';
 import Modal from 'react-modal';
 import { changeInputStyle } from '../../Common/processors.js';
-
 
 
 const TheftReport = (props) => {
@@ -18,17 +13,20 @@ const TheftReport = (props) => {
         changeInputStyle('#theft-report-page__input-date', 'remove', 'input_uncorrected');
     };
 
+
     const onChangeLicenseNumber = e => {
         let licenseNumber = e.target.value;
         props.caseActions.setLicenseNumber(licenseNumber);
         changeInputStyle('#theft-report-page__input-licenceNumber', 'remove', 'input_uncorrected');
     };
 
+
     const onChangeColor = e => {
         let color = e.target.value;
         props.caseActions.setColor(color);
         changeInputStyle('#theft-report-page__input-color', 'remove', 'input_uncorrected');
     };
+
 
     const onChangeType = (e) => {
         let value = e.target.value;
@@ -42,6 +40,7 @@ const TheftReport = (props) => {
         props.caseActions.setOwnerFullName(ownerFullName);
         changeInputStyle('#theft-report-page__input-ownerFullName', 'remove', 'input_uncorrected');
     };
+
 
     const onChangeDescription = e => {
         let description = e.target.value;
@@ -129,26 +128,17 @@ const TheftReport = (props) => {
                 <button className='theft-report-page__button-clear' onClick={props.onClearFormButtonClick}>Очистить форму</button>
                 <button className='theft-report-page__button-send' onClick={props.onSubmitFormButtonClick}>Отправить данные</button>
             </div>
-
-            
-            
+      
             <Modal
-                    isOpen={props.store.confirmation.showConfirmation}
-                    //contentLabel="Minimal Modal Example"
-                    shouldCloseOnOverlayClick={props.store.confirmation.shouldCloseOnOverlayClick}
-                    shouldCloseOnEsc={props.store.confirmation.shouldCloseOnEsc}
-                    onRequestClose={props.closeConfirmation}
-                    className='.'
-                    style={{
-                        overlay: {backgroundColor: 'rgba(255, 255, 255, 0.7)'}
-                    }}
-                    >
-                    <Confirmation 
-                        {...props} 
-                    />
+                isOpen={props.store.confirmation.showConfirmation}
+                shouldCloseOnOverlayClick={props.store.confirmation.shouldCloseOnOverlayClick}
+                shouldCloseOnEsc={props.store.confirmation.shouldCloseOnEsc}
+                onRequestClose={props.closeConfirmation}
+                className='.'
+                style={{ overlay: {backgroundColor: 'rgba(255, 255, 255, 0.7)'} }}
+            >
+                <Confirmation {...props} />
             </Modal>
-
-
 
         </div>
     )

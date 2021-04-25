@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './MenuAdmin.css';
-import { connect } from 'react-redux';
-
 
 
 const MenuAdmin = (props) => {
@@ -13,10 +11,10 @@ const MenuAdmin = (props) => {
             props.mainActions.setAutorized(false);
             props.mainActions.setToken('');
             JSON.stringify(localStorage.clear());
-            props.history.push('/public/mainpage')
+            props.history.push('/public/mainpage'); //Переход на главную страницу
         }
-        console.log('You have been unauthorized!');
     }
+
 
     return (
         <div className='menu-admin'>
@@ -31,13 +29,10 @@ const MenuAdmin = (props) => {
             <div className='menu-admin__exit'>
                 <button className='menu-admin__item__button' onClick={onButtonExitClick} />
             </div>
-
         </div>
     )
-
-    
+  
 }
-
 
 
 export default MenuAdmin;

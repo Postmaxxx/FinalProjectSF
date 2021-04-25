@@ -5,14 +5,12 @@ export const setShowConfirmation = showConfirmation => {
     };
 };
 
-
 export const setConfirmationMainText = confirmationMainText => {
     return {
         type: 'CHANGE_CONFIRMATION_MAIN_TEXT',
         confirmationMainText
     };
 };
-
 
 export const setConfirmationLeftButtonText = confirmationLeftButtonText => {
     return {
@@ -21,7 +19,6 @@ export const setConfirmationLeftButtonText = confirmationLeftButtonText => {
     };
 };
 
-
 export const setConfirmationRightButtonText = confirmationRightButtonText => {
     return {
         type: 'CHANGE_CONFIRMATION_RIGHT_BUTTON_TEXT',
@@ -29,14 +26,12 @@ export const setConfirmationRightButtonText = confirmationRightButtonText => {
     };
 };
 
-
 export const setConfirmationLeftButtonAction = confirmationLeftButtonAction => {
     return {
         type: 'CHANGE_CONFIRMATION_LEFT_BUTTON_ACTION',
         confirmationLeftButtonAction
     };
 };
-
 
 export const setConfirmationRightButtonAction = confirmationRightButtonAction => {
     return {
@@ -51,7 +46,6 @@ export const setShouldCloseOnOverlayClick = shouldCloseOnOverlayClick => {
         shouldCloseOnOverlayClick
     };
 };
-
 
 export const setShouldCloseOnEsc = shouldCloseOnEsc => {
     return {

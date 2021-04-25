@@ -1,160 +1,136 @@
 .employee-details-container {
-    background: white;
-    position: absolute;
-    width: 750px;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-
-    border: 10px solid rgba(173, 216, 230, 0.4);
-    border-radius: 30px;
-    background-color: rgba(50, 50, 50, 0.95);
-    box-shadow: 0px 0px 12px 10px #7e858f;
+	background: white;
+	position: absolute;
+	width: 750px;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	border: 10px solid rgba(173, 216, 230, 0.4);
+	border-radius: 30px;
+	background-color: rgba(50, 50, 50, 0.95);
+	box-shadow: 0px 0px 12px 10px #7e858f;
 }
 
 .employee-details-container__header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-    width: 100%;
-    height: 60px;
-    padding: 0 15px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    background-color: #faeabe;    
-    box-sizing: border-box;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: row;
+	width: 100%;
+	height: 60px;
+	padding: 0 15px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	background-color: #faeabe;
+	box-sizing: border-box;
 }
 
-
 .employee-details-container__header-container__delete-button {
-    width: 50px;
-    height: 50px;
-    background: url(../../../../assets/images/icon-trash-red.png);
-    background-repeat: no-repeat;
-    cursor: pointer;
-    outline:0 none;
-    border: 0px solid #000;
-    background-size: cover;
-    border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	background: url(../../../../assets/images/icon-trash-red.png);
+	background-repeat: no-repeat;
+	cursor: pointer;
+	outline: 0 none;
+	border: 0px solid #000;
+	background-size: cover;
+	border-radius: 50%;
 }
 
 .employee-details-container__header {
-    font-size: 24px;
-    text-align: center;
-    text-transform: uppercase;
+	font-size: 24px;
+	text-align: center;
+	text-transform: uppercase;
 }
 
-.employee-details-container__header__close-button{
-    box-sizing: border-box;
-    width: 50px;
-    height: 50px;
-    background: url(../../../../assets/images/icon-close-blue.png);
-    background-repeat: no-repeat;
-    cursor: pointer;
-    outline:0 none;
-    border: 0px solid #000;
-    background-size: cover;
-    border-radius: 50%;
+.employee-details-container__header__close-button {
+	box-sizing: border-box;
+	width: 50px;
+	height: 50px;
+	background: url(../../../../assets/images/icon-close-blue.png);
+	background-repeat: no-repeat;
+	cursor: pointer;
+	outline: 0 none;
+	border: 0px solid #000;
+	background-size: cover;
+	border-radius: 50%;
 }
-
 
 .employee-details-container__inputs-area {
-    width: 100%;
-    box-sizing: border-box;
-    margin-top: 40px;
-    border-top: 5px solid rgba(173, 216, 230, 0.5);
-    border-bottom: 5px solid rgba(173, 216, 230, 0.5);
-    border-radius: 10px;
-    /*box-shadow: 0px -13px 12px 2px #DCE6F2;*/
-    padding: 30px 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+	width: 100%;
+	box-sizing: border-box;
+	margin-top: 40px;
+	border-top: 5px solid rgba(173, 216, 230, 0.5);
+	border-bottom: 5px solid rgba(173, 216, 230, 0.5);
+	border-radius: 10px;
+	padding: 30px 50px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
-/*
-.employee-details-container__inputs-area__left-side {
-    width: 45%;
-    padding: 20px 25px 0 25px;
-    box-sizing: border-box;
-    border-right: 2px dotted rgba(173, 216, 230, 0.8);
-}
-*/
 .employee-details-container__inputs-area__item {
-    width: 100%;
-    margin-bottom: 25px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+	width: 100%;
+	margin-bottom: 25px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .employee-details-container__inputs-area__item:nth-last-child(1) {
-    margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 
 .employee-details-container__inputs-area__item__label {
-    font-size: 16px;
-    text-transform: uppercase;
-    color: #EEE;
+	font-size: 16px;
+	text-transform: uppercase;
+	color: #eee;
 }
 
 .employee-details-container__inputs-area__item__input {
-    width: 370px;
-    line-height: 25px;
-    font-size: 20px;
-    color: #111;
+	width: 370px;
+	line-height: 25px;
+	font-size: 20px;
+	color: #111;
 }
 
-
-
 .employee-details-container__buttons-area {
-    display: flex;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
+	display: flex;
+	height: 100px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 30px;
 }
 
 .employee-details-container__buttons-area__button {
-    height: 40px;
-    width: 250px;
-    font-size: 20px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #222;
-    background-color: rgb(205, 227, 255);
-}
-
-.employee-details-container__buttons-area__button-close {
-/*    background-color: rgb(252, 174, 166);*/
-}
-
-
-.employee-details-container__buttons-area__button-save-close {
-  /*  background-color: rgb(205, 227, 255);*/
+	height: 40px;
+	width: 250px;
+	font-size: 20px;
+	font-weight: 600;
+	cursor: pointer;
+	color: #222;
+	background-color: rgb(205, 227, 255);
 }
 
 .show-passwords-employee-container {
-    width: 100%;
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+	width: 100%;
+	margin-top: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
 }
 
-
 .show-passwords-employee-icon {
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    background: url(../../../../assets/images/icon-eye_open-blue-2.png);
-    background-size: contain;
-    position: absolute;
-    right: 15px;
-    top: -150px;
+	border-radius: 50%;
+	width: 25px;
+	height: 25px;
+	background: url(../../../../assets/images/icon-eye_open-blue-2.png);
+	background-size: contain;
+	position: absolute;
+	right: 15px;
+	top: -150px;
 }

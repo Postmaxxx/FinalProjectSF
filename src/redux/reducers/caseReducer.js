@@ -14,6 +14,7 @@ const initialState = {
     hasOfficer: false
 };
 
+
 function caseReducer(state = initialState, action) {
     switch (action.type) {
         case 'CHANGE_CASE_STATUS':
@@ -85,5 +86,6 @@ function caseReducer(state = initialState, action) {
         default: return state;
     }
 }
+
 
 export default caseReducer;

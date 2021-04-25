@@ -1,9 +1,6 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
-//import './MainPage.css';
-import store from '../../../redux/store';
-import { connect } from 'react-redux';
+import React from 'react';
 import './MainPage.css';
+
 
 const MainPage = (props) => {
     return (
@@ -15,13 +12,9 @@ const MainPage = (props) => {
             значительно усложняем процесс повторной реализации этих велосипедов на вторичном рынке. Также мы предоставляем сервис
             по приему заявлений от всех граждан об украденных велосипедах, проверяя и добавляя эту информацию в единую базу.
         </p>
-
     </div>
     )
-
-
 }
-
 
 
 export default MainPage;

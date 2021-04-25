@@ -1,9 +1,9 @@
 export const setCasesArray = casesArray => {
     let casesArrayProcessed = casesArray.map((item) => {
-        return {
-                ...item,
-                bikeType: item.type
-                } 
+    return {
+        ...item,
+        bikeType: item.type
+        } 
     })
     return { 
         type: 'CHANGE_CASES_ARRAY',
@@ -17,7 +17,6 @@ export const setShowCaseDetails = showCaseDetails => {
         showCaseDetails
     };
 };
-
 
 export const setDetailedCaseId = detailedCaseId => {
     return { 

@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink, withRouter } from 'react-router-dom';
-//import './MainPage.css';
-import { connect } from 'react-redux';
+import React from 'react';
 import Modal from 'react-modal';
 import Confirmation from '../../../Common/Confirmation.jsx';
 import { changeInputStyle } from '../../../Common/processors.js';
+
 
 const CaseDetails = (props) => {
 
@@ -13,11 +11,13 @@ const CaseDetails = (props) => {
         props.caseActions.setStatus(status);
     };
 
+
     const onChangeDate = e => {
         let date = e.target.value;
         props.caseActions.setDate(date);
         changeInputStyle('#case-details-container__input-date', 'remove', 'input_uncorrected');
     };
+
 
     const onChangeOwnerFullName = e => {
         let ownerFullName = e.target.value;
@@ -25,11 +25,13 @@ const CaseDetails = (props) => {
         changeInputStyle('#case-details-container__input-ownerFullName', 'remove', 'input_uncorrected');
     };
 
+
     const onChangeType = e => {
         let bikeType = e.target.value;
         props.caseActions.setType(bikeType);
         changeInputStyle('#case-details-container__input-bikeType', 'remove', 'input_uncorrected');
     };
+
 
     const onChangeColor = e => {
         let color = e.target.value;
@@ -47,11 +49,9 @@ const CaseDetails = (props) => {
 
     const onChangeOfficer = e => {
         let officer_id = e.target.value;
-        if (officer_id === 'Не назначен') {
-            props.caseActions.setOfficer(undefined)
-        } else {
+        officer_id === 'Не назначен' ? 
+            props.caseActions.setOfficer(undefined) : 
             props.caseActions.setOfficer(officer_id)
-        }
         changeInputStyle('#case-details-container__input-officer', 'remove', 'input_uncorrected');
     };
 
@@ -60,7 +60,8 @@ const CaseDetails = (props) => {
         let description = e.target.value;
         props.caseActions.setDescription(description);
         changeInputStyle('#case-details-container__input-description', 'remove', 'input_uncorrected');
-};
+    };
+
 
     const onChangeResolution = e => {
         let resolution = e.target.value;
@@ -77,6 +78,7 @@ const CaseDetails = (props) => {
                 <h1 className='case-details-container__header'>{props.store.cases.detailedCaseHeaderText}</h1>
                 <button className='case-details-container__header__close-button' onClick={props.onCloseDetailsButtonClick} />
             </div>
+
             <div className='case-details-container__inputs-area'>
                 <div className='case-details-container__inputs-area__left-side'>
                     <div className='case-details-container__inputs-area__left-side__item'>
@@ -122,8 +124,8 @@ const CaseDetails = (props) => {
                             id='case-details-container__input-bikeType'
                             onChange={onChangeType} 
                         >
-                        <option value='general'>Обычный</option>    
-                        <option value='sport'>Спорт</option>       
+                            <option value='general'>Обычный</option>    
+                            <option value='sport'>Спорт</option>       
                         </select>
                     </div>
                     
@@ -146,11 +148,10 @@ const CaseDetails = (props) => {
                             id='case-details-container__input-licenseNumber'
                             placeholder=''
                             type='text'
-                        value={props.store.case.licenseNumber}
-                        onChange={onChangeLicenseNumber}
+                            value={props.store.case.licenseNumber}
+                            onChange={onChangeLicenseNumber}
                         />
                     </div>
-
 
                     <div className='case-details-container__inputs-area__left-side__item'>
                         <label className='case-details-container__inputs-area__left-side__item__label'>Сотрудник</label>
@@ -159,19 +160,15 @@ const CaseDetails = (props) => {
                             id='case-details-container__input-officer'
                             value={props.store.case.officer === undefined ? 'Не назначен' : props.store.case.officer}
                             onChange={onChangeOfficer} 
-                            >   
-                                <option value={undefined} key='x'>Не назначен</option>
-                                {props.store.employees.employeesArray.map((item) => {
-                                    return (
-                                        <option value={item._id} key={item._id}>{item.lastName} {item.firstName}</option>
-                                    )
-                                })}
-
+                        >   
+                            <option value={undefined} key='x'>Не назначен</option>
+                            {props.store.employees.employeesArray.map((item) => {
+                                return (
+                                    <option value={item._id} key={item._id}>{item.lastName} {item.firstName}</option>
+                                )
+                            })}
                         </select>
                     </div>
-
-
-
                 </div>
 
                 <div className='case-details-container__inputs-area_right-side'>
@@ -180,22 +177,19 @@ const CaseDetails = (props) => {
                         <textarea 
                             className='case-details-container__inputs-area__right-side__item__descr' 
                             className={props.store.case.status === 'done' ? 
-                                'case-details-container__inputs-area__right-side__item__descr'
-                                : 'case-details-container__inputs-area__right-side__item__descr case-details-container__inputs-area__right-side__item__descr_expanded'}
+                                'case-details-container__inputs-area__right-side__item__descr' :
+                                'case-details-container__inputs-area__right-side__item__descr case-details-container__inputs-area__right-side__item__descr_expanded'}
                             id='case-details-container__input-description'
                             onChange={onChangeDescription} 
                             value={props.store.case.description} 
                             />
                     </div>
-           
                     
                     <div 
                         className={props.store.case.status === 'done' ? 
                             'case-details-container__inputs-area__right-side__item' :
                             'invisible'}
                         >
-                        
-                        
                         <label className='case-details-container__inputs-area__right-side__item__label'>Заключение</label>
                         <textarea 
                             className='case-details-container__inputs-area__right-side__item__resolution' 
@@ -203,13 +197,9 @@ const CaseDetails = (props) => {
                             onChange={onChangeResolution} 
                             value={props.store.case.resolution} 
                         />
-                    </div>
-                        
-                    
+                    </div>                   
                 </div>
             </div>
-
-
 
             <div className='case-details-container__buttons-area'>
                 <button className='case-details-container__buttons-area__button case-details-container__buttons-area__button-save' onClick={props.onApplyDetailsButtonClick}>Сохранить изменения</button>
@@ -217,43 +207,20 @@ const CaseDetails = (props) => {
             </div>
 
             <Modal
-                    isOpen={props.store.confirmation.showConfirmation}
-                    //contentLabel="Minimal Modal Example"
-                    shouldCloseOnOverlayClick={props.store.confirmation.shouldCloseOnOverlayClick}
-                    shouldCloseOnEsc={props.store.confirmation.shouldCloseOnEsc}
-                    onRequestClose={props.closeConfirmation}
-                    className='.'
-                    style={{
-                        overlay: {backgroundColor: 'rgba(255, 255, 255, 0.7)'}
-                    }}
-                    >
-                    <Confirmation 
-                        {...props} 
-                    />
+                isOpen={props.store.confirmation.showConfirmation}
+                shouldCloseOnOverlayClick={props.store.confirmation.shouldCloseOnOverlayClick}
+                shouldCloseOnEsc={props.store.confirmation.shouldCloseOnEsc}
+                onRequestClose={props.closeConfirmation}
+                className='.'
+                style={{
+                    overlay: {backgroundColor: 'rgba(255, 255, 255, 0.7)'}
+                }}
+            >
+                <Confirmation {...props} />
             </Modal>
-
-
         </div>
     )
-
-
 }
 
 
-
-
 export default CaseDetails;
-
-/*
-                    <div className='case-details-container__inputs-area__left-side__item'>
-                        <label className='case-details-container__inputs-area__left-side__item__label'>ID ответственного</label>
-                        <input 
-                            className='case-details-container__inputs-area__left-side__item__input' 
-                            id='case-details-container__input-officer'
-                            placeholder=''
-                            type='text'
-                            value={props.store.case.officer}
-                            onChange={onChangeOfficer}
-                        />
-                    </div>
-*/

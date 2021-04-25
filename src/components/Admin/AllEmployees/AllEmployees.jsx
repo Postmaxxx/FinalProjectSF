@@ -1,19 +1,14 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink, withRouter } from 'react-router-dom';
-//import './MainPage.css';
-import store from '../../../redux/store';
-import { connect } from 'react-redux';
+import React from 'react';
 
 
 const AllEmployees = (props) => {
+    let { employeesArray } = props.store.employees;
 
-    let employees_array = props.store.employees.employeesArray;
-
-    let employees_list = employees_array.map((item) => {
-        let approved = item.approved;
-        return (
+    let employeesList = employeesArray.map((item) => {
+        let approved = item.approved; //добавление *, если сотрудник не одобрен
+        return ( //добавление атрибута _id={item._id} к каждой строке
             <tr className={approved ? 'employees-table__data' : 'employees-table__data not-approved'} _id={item._id} key={item._id}>
-                <td>{approved ? null : '*'}{item.email}</td>
+                <td>{approved ? null : '*'}{item.email}</td> 
                 <td>{approved ? null : '*'}{item.firstName}</td>
                 <td>{approved ? null : '*'}{item.lastName}</td>
                 <td>{approved ? null : '*'}{item._id}</td>
@@ -23,8 +18,6 @@ const AllEmployees = (props) => {
     })
 
    
-
-
     return (
         <div className='all-employees-container__table-container'>
             <table className='employees-table' onClick={(e) => props.onTableClick(e)}>
@@ -58,17 +51,13 @@ const AllEmployees = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {employees_list}
-                </tbody>
 
+                    {employeesList}
+
+                </tbody>
             </table>
         </div>
     )
-
-
-
-
-
 }
 
 

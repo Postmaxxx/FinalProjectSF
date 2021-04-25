@@ -1,123 +1,111 @@
 .theft-report-page-container {
-    margin: 90px auto 0;
-    box-sizing: border-box;
-    display: block;
-    max-width: 1000px;
-    border: 10px solid rgba(173, 216, 230, 0.4);
-    border-radius: 30px;
-    background-color: rgba(0, 0, 0, 0.65);
-    box-shadow: 0px 0px 12px 10px #7e858f;
+	margin: 90px auto 0;
+	box-sizing: border-box;
+	display: block;
+	max-width: 1000px;
+	border: 10px solid rgba(173, 216, 230, 0.4);
+	border-radius: 30px;
+	background-color: rgba(0, 0, 0, 0.65);
+	box-shadow: 0px 0px 12px 10px #7e858f;
 }
 
-
-
-
 .theft-report-page__header {
-    font-size: 28px;
-    text-align: center;
-    margin: 30px 20px 0;
-    color: #EEE;
+	font-size: 28px;
+	text-align: center;
+	margin: 30px 20px 0;
+	color: #eee;
 }
 
 .theft-report-page__inputs-area {
-    width: 100%;
-    box-sizing: border-box;
-    margin-top: 40px;
-    border-top: 5px solid rgba(173, 216, 230, 0.5);
-    border-bottom: 5px solid rgba(173, 216, 230, 0.5);
-    border-radius: 10px;
-    /*box-shadow: 0px -13px 12px 2px #DCE6F2;*/
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+	width: 100%;
+	box-sizing: border-box;
+	margin-top: 40px;
+	border-top: 5px solid rgba(173, 216, 230, 0.5);
+	border-bottom: 5px solid rgba(173, 216, 230, 0.5);
+	border-radius: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
-
 
 .theft-report-page__inputs-area__left-side {
-    width: 45%;
-    height: 300px;
-    padding: 20px 25px;
-    box-sizing: border-box;
-    border-right: 2px dotted rgba(173, 216, 230, 0.8);
+	width: 45%;
+	height: 300px;
+	padding: 20px 25px;
+	box-sizing: border-box;
+	border-right: 2px dotted rgba(173, 216, 230, 0.8);
 }
 
-
 .theft-report-page__inputs-area__left-side__input-item {
-    width: 100%;
-    margin-bottom: 25px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+	width: 100%;
+	margin-bottom: 25px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .theft-report-page__inputs-area__left-side__input-item__label {
-    font-size: 18px;
-    text-transform: uppercase;
-    color: #EEE;
+	font-size: 18px;
+	text-transform: uppercase;
+	color: #eee;
 }
-
 
 .theft-report-page__inputs-area__left-side__input-item__input {
-    width: 170px;
-    line-height: 25px;
-    font-size: 20px;
-    color: #111;
+	width: 170px;
+	line-height: 25px;
+	font-size: 20px;
+	color: #111;
 }
 
-
 .theft-report-page__inputs-area__right-side {
-    width: 55%;
-    height: 300px;
-    padding: 20px 25px;
-    box-sizing: border-box;
+	width: 55%;
+	height: 300px;
+	padding: 20px 25px;
+	box-sizing: border-box;
 }
 
 .theft-report-page__inputs-area__right-side__label {
-    font-size: 18px;
-    text-align: center;
-    color: #EEE;
+	font-size: 18px;
+	text-align: center;
+	color: #eee;
 }
 
-
 .theft-report-page__inputs-area__right-side__textarea {
-    width: 100%;
-    margin-top: 20px;
-    height: 185px;
-    resize: none;
-    font-size: 18px;
-}   
-
+	width: 100%;
+	margin-top: 20px;
+	height: 185px;
+	resize: none;
+	font-size: 18px;
+}
 
 .theft-report-page__buttons-area {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0 30px;
-    height: 120px;
-    box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 0 30px;
+	height: 120px;
+	box-sizing: border-box;
 }
 
 .theft-report-page__button-clear {
-    height: 50px;
-    width: 250px;
-    font-size: 20px;
-    font-weight: 600;
-    background-color: rgb(252, 174, 166);
-    cursor: pointer;
-    color: #222;
+	height: 50px;
+	width: 250px;
+	font-size: 20px;
+	font-weight: 600;
+	background-color: rgb(252, 174, 166);
+	cursor: pointer;
+	color: #222;
 }
 
-
 .theft-report-page__button-send {
-    height: 50px;
-    width: 250px;
-    font-size: 20px;
-    font-weight: 600;
-    /*background-color: rgb(192, 243, 201);*/
-    background-color: rgb(205, 227, 255);
-    cursor: pointer;
-    color: #222;
+	height: 50px;
+	width: 250px;
+	font-size: 20px;
+	font-weight: 600;
+	background-color: rgb(205, 227, 255);
+	cursor: pointer;
+	color: #222;
 }

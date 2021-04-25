@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import ReactDom from 'react-dom';
-import { BrowserRouter, Switch, Route, NavLink, Redirect, withRouter } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './App.css';
 import { bindActionCreators } from 'redux';
-
-
 import MenuContainer from './components/Menu/MenuContainer.jsx';
 import Footer from './components/Footer/Footer.jsx';
-
 import AdminContainer from './components/Admin/AdminContainer.jsx';
 import PublicContainer from './components/Public/PublicContainer.jsx';
 
@@ -23,9 +19,7 @@ import * as confirmationActions from './redux/actionCreators/confirmationActions
 
 class App extends Component {
 
-
     componentDidMount() {
-        console.log('this ', this);
         let token = JSON.parse(localStorage.getItem('token'));
         this.props.mainActions.setToken(token);
         let clientId = JSON.parse(localStorage.getItem('clientId'));
@@ -40,7 +34,6 @@ class App extends Component {
             console.log('You have not been autorized!');  
         }
     }
-
 
     render() {
         return (
@@ -64,14 +57,15 @@ class App extends Component {
     }
 }
 
-function stateToProps(state) {
+
+function mapStateToProps(state) { //пробрасываем state в props как store
     return {
         store: state
     }
 }
 
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {  //пробрасываем Actions в props
     return {
         mainActions: bindActionCreators(mainActions, dispatch),
         casesActions: bindActionCreators(casesActions, dispatch),
@@ -80,12 +74,12 @@ const mapDispatchToProps = (dispatch) => {
         employeeActions: bindActionCreators(employeeActions, dispatch),
         confirmationActions: bindActionCreators(confirmationActions, dispatch),
     }
-  }
+}
 
 
-const withRouterApp = withRouter(App);
+const withRouterApp = withRouter(App); 
 
 export default connect(
-    stateToProps,
+    mapStateToProps,
     mapDispatchToProps
 )(withRouterApp);

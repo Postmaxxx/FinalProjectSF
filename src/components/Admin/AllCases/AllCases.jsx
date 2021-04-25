@@ -1,26 +1,18 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink, withRouter } from 'react-router-dom';
-//import './MainPage.css';
-import store from '../../../redux/store';
-import { connect } from 'react-redux';
-import Preloader from '../../Common/Preloader.jsx';
+import React from 'react';
 
 
 const AllCases = (props) => {
-    let cases_array = props.store.cases.casesArray;
-
-    let cases_list = cases_array.map((item) => {
+    let casesArray = props.store.cases.casesArray;
+    let casesList = casesArray.map((item) => { //пробегаемся по всем делам
         let officerID = item.officer; //ID назначенного сотрудника
         let firstName = undefined; //По умолчанию сотрудника нет в базе
         let lastName = undefined; 
         
-        if (props.store.employees.employeesArray.findById(officerID)) { //Если сотрудник есть в базе
+        if (props.store.employees.employeesArray.isExist(officerID)) { //Если сотрудник есть в базе
             firstName = props.store.employees.employeesArray.findById(officerID).firstName; //ищем по ID в employeesArray
             lastName = props.store.employees.employeesArray.findById(officerID).lastName;
         }
         
-
-
         return (
             <tr className='cases-table__data' _id={item._id} key={item._id}>
                 <td>{item.createdAt.slice(0,10)}</td>
@@ -34,16 +26,12 @@ const AllCases = (props) => {
                 <td>{item.color}</td>
                 <td>{item.licenseNumber}</td>
 
-
-
-
-                <td>{officerID === undefined ? 'Не назначен'
-                : firstName === undefined ? 'Нет в базе'
-                : `${firstName} ${lastName}`
+                <td>{officerID === undefined ? 
+                    'Не назначен' :
+                    firstName === undefined ? 
+                        'Нет в базе' : 
+                        `${firstName} ${lastName}`
                 }</td>
-
-
-
 
                 {item.description.length > 40 ? (<td>{item.description.slice(0,40)+'...'}</td>) : (<td>{item.description}</td>)}
                 
@@ -51,21 +39,13 @@ const AllCases = (props) => {
                 {item.status==='in_progress' ? (<td>В работе</td>) : null }
                 {item.status==='done' ? (<td>Закрыто</td>) : null }
                 
-                {item.status === 'done' ? (
-                item.resolution.length > 20 ? (<td>{item.resolution.slice(0,20)+'...'}</td>) : (<td>{item.resolution}</td>)
-                ) : <td></td> }
+                {item.status === 'done' ? 
+                    (item.resolution.length > 20 ? (<td>{item.resolution.slice(0,20)+'...'}</td>) : (<td>{item.resolution}</td>)) :
+                    <td></td> }
             </tr>
         )
     })
 
-   /*
-   
-                <td>{item.officer === undefined ? 'Не назначен'
-                : firstName === undefined ? 'Нет в базе'
-                : `${firstName} ${lastName}`
-                }</td>
-   */
-    
 
     return (
         <div className='all-cases-container__table-container'>
@@ -131,23 +111,14 @@ const AllCases = (props) => {
                 </thead>
                 <tbody>
 
-                {cases_list }
+                {casesList }
                     
                 </tbody>
 
             </table>
         </div>
     )
-
-
-
-
-
 }
-/*
 
-                {props.store.main.fetching.receiveCases.isFetching ? <Preloader {...props} preloaderText='Загрузка списка дел...'/>
-                : cases_list }
-                */
 
 export default AllCases;

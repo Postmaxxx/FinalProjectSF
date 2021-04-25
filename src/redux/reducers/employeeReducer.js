@@ -8,6 +8,7 @@ const initialState = {
     approved: false
 };
 
+
 function employeeReducer(state = initialState, action) {
     switch (action.type) {
         case 'CHANGE_EMPLOYEE_EMAIL':
@@ -46,9 +47,9 @@ function employeeReducer(state = initialState, action) {
                 approved: action.approved
         };
 
-
         default: return state;
     }
 }
+
 
 export default employeeReducer;

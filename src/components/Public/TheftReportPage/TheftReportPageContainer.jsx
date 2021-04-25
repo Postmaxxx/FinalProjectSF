@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
-//import './TheftReport.css';
-import { connect } from 'react-redux';
 import TheftReportPage from './TheftReportPage.jsx';
 import axios from 'axios';
 import Modal from 'react-modal';
@@ -9,28 +6,28 @@ import { changeInputStyle, checkContentType } from '../../Common/processors.js';
 import Preloader from '../../Common/Preloader.jsx';
 
 
-
 class TheftReportPageContainer extends Component {
     constructor(props) {
         super(props);
-        this.clearForm = this.clearForm.bind(this);
+        this.clearForm = this.clearForm.bind(this);  //Сделано специально потренироваться
     }
 
 
     componentDidMount() {
-        Modal.setAppElement('body');
+        Modal.setAppElement('body'); //Без привязки будет ошибка, т.к. modal не к чему привязаться
      }   
 
 
-    openConfirmation = () => {
-        this.props.confirmationActions.setShowConfirmation(true);
+    openConfirmation = () => { //Открыть модальное окно подтверждения
+        this.props.confirmationActions.setShowConfirmation(true); //Установить статус Показывать
     }
     
-    closeConfirmation = () => {
+    closeConfirmation = () => { 
         this.props.confirmationActions.setShowConfirmation(false);
     }
 
-    onClearFormButtonClick = () => {
+
+    onClearFormButtonClick = () => { //При нажатии кнопки Очистить форму
         this.props.confirmationActions.setConfirmationMainText('Вы уверены, что хотите очистить форму?')
         this.props.confirmationActions.setConfirmationLeftButtonText('Отмена');
         this.props.confirmationActions.setConfirmationRightButtonText('Очистить');
@@ -42,7 +39,7 @@ class TheftReportPageContainer extends Component {
     }
 
 
-    clearForm() {  
+    clearForm() {
         this.props.caseActions.setDate('');
         this.props.caseActions.setLicenseNumber('');
         this.props.caseActions.setColor('');
@@ -55,7 +52,6 @@ class TheftReportPageContainer extends Component {
         changeInputStyle('#theft-report-page__input-ownerFullName', 'remove', 'input_uncorrected');
         changeInputStyle('#theft-report-page__input-description', 'remove', 'input_uncorrected');
         changeInputStyle('#theft-report-page__input-bikeType', 'remove', 'input_uncorrected');
-        console.log('Form has been cleared!');
         this.closeConfirmation();
     }
 
@@ -72,19 +68,19 @@ class TheftReportPageContainer extends Component {
     }
     
 
-    checkInputsCorrection = () => {
-        let errorsArray = [];
+    checkInputsCorrection = () => { //Проверка корректности ввода
+        let errorsArray = []; //массив ошибок, по умолчанию их нет
         let { date, ownerFullName, bikeType, color, licenseNumber, description } = this.props.store.case;
         if (date === '') {
             errorsArray.push('Не указана дата кражи велосипеда');
-            changeInputStyle('#theft-report-page__input-date', 'add', 'input_uncorrected');
+            changeInputStyle('#theft-report-page__input-date', 'add', 'input_uncorrected'); //Выделение нужного Input цветом путем добавления стиля
         }
-        
+
         if (licenseNumber.length < 3) {
-            errorsArray.push('Не указан номер велосипеда');
+            errorsArray.push('Номер велосипеда слишком короткий');
             changeInputStyle('#theft-report-page__input-licenceNumber', 'add', 'input_uncorrected');
         }
-        if (!checkContentType(licenseNumber, 'text+number')) {
+        if (!checkContentType(licenseNumber, 'text+number')) { // Проверка синтаксиса введенных данных
             errorsArray.push('Номер велосипеда указан неверно (разрешены только цифры и буквы)');
             changeInputStyle('#case-details-container__input-licenseNumber', 'add', 'input_uncorrected');
         }
@@ -116,52 +112,44 @@ class TheftReportPageContainer extends Component {
             errorsArray.push('Описание обстоятельст кражи и особых примет слишком короткое');
             changeInputStyle('#theft-report-page__input-description', 'add', 'input_uncorrected');
         }
-        if (errorsArray.length === 0) {
-            return 'None';
-        } else { 
-            return (errorsArray.join(", ") + '. ') 
-        }
+        
+        return errorsArray.length === 0 ? 'None' : (errorsArray.join(", ") + '. ')
     }
 
 
     checkAndSendSubmitForm = ()  => {
         this.closeConfirmation();
         let errorsList = this.checkInputsCorrection();
-        if (errorsList === 'None') {
-            console.log('ERRERS');
-            this.submitForm();
-        } else {
+        errorsList === 'None' ? 
+            this.submitForm() :
             alert('Обнаружены следующие ошибки при заполнении: ' + errorsList + 'Исправьте введенные даннные и попробуйте снова.');
-        }
     }
 
 
     submitForm = () => {
-        let current_date = new Date().toISOString().split('T')[0];
-        console.log('current_date', current_date);
-        let report_data = {
+        let currentDate = new Date().toISOString().split('T')[0];
+        let reportData = {
             status: 'new',
             date: this.props.store.case.date,
             licenseNumber: this.props.store.case.licenseNumber,
             color: this.props.store.case.color,
             type: this.props.store.case.bikeType,
             ownerFullName: this.props.store.case.ownerFullName,
-            createdAt: current_date, 
-            updateAt: current_date,
-            clientId: 'bmluYS5wb3N0bmlrb3ZhODdAeWFuZGV4LnJ1',
+            createdAt: currentDate, 
+            updateAt: currentDate,
+            clientId: 'bmluYS5wb3N0bmlrb3ZhODdAeWFuZGV4LnJ1', //Без этого поля не принимает, но непонятно, откуда оно должно браться для гостя?
             description: this.props.store.case.description,
             resolution: ''
         };
-        console.log('Starting axios post... ', report_data);
-        this.props.mainActions.setFetching('start', 'reportCase', 'Отправка сообщения...');
-        axios.post('http://84.201.129.203:8888/api/public/report', report_data)
+        this.props.mainActions.setFetching('start', 'reportCase'); //Работа с  fetch
+        axios.post('http://84.201.129.203:8888/api/public/report', reportData)
         .then(response => {
             if (response.status===200) {
                 this.props.mainActions.setFetching('success', 'reportCase', `Данные успешно отправлены!`);
-                this.props.caseActions.setDate('');
+                this.props.caseActions.setDate('');             //Очистка формы
                 this.props.caseActions.setLicenseNumber('');
                 this.props.caseActions.setColor('');
-                this.props.caseActions.setType('выберете:');
+                this.props.caseActions.setType('');
                 this.props.caseActions.setOwnerFullName('');
                 this.props.caseActions.setDescription(''); 
                 alert('Отчет был успешно отправлен!');
@@ -171,46 +159,25 @@ class TheftReportPageContainer extends Component {
             this.props.mainActions.setFetching('error', 'reportCase', `Произошла ошибка при отправке сообщения: ${error.response.status} ( ${error.message} )`);
             alert('Ошибка при отправке отчета!' + error.message);
         });
-
-    }
-
-
-    testFetch = () => {
-        this.props.mainActions.setFetching('start', 'logginIn' ,'Загрузка...');
-        console.log(this.props);
-    }
-       
-
-    testFetch2 = () => {
-        this.props.mainActions.setFetching('start', 'receiveEmployees' ,'Загрузка...');
-        console.log(this.props);
     }
 
 
     render() {
         return (
             <div className='theft-report-page-container'>
-                <button onClick={this.testFetch}>ChangeFetch</button>
-                <button onClick={this.testFetch2}>ChangeFetch2</button>
-                
-                {this.props.store.main.fetching.reportCase.isFetching ? <Preloader {...this.props} preloaderText='Отправка сообщения...' marginTop='0px' marginLeft='auto'/> 
-                    :  <TheftReportPage 
-                    {...this.props} 
-                    onClearFormButtonClick={this.onClearFormButtonClick}
-                    onSubmitFormButtonClick={this.onSubmitFormButtonClick}
-                    closeConfirmation={this.closeConfirmation}
+                {this.props.store.main.fetching.reportCase.isFetching ? 
+                    <Preloader {...this.props} preloaderText='Отправка сообщения...' marginTop='0px' marginLeft='auto'/> :
+                    <TheftReportPage 
+                        {...this.props} 
+                        onClearFormButtonClick={this.onClearFormButtonClick}
+                        onSubmitFormButtonClick={this.onSubmitFormButtonClick}
+                        closeConfirmation={this.closeConfirmation}
                     />
-                    }
-
-                
-               
+                }
             </div>
         )
-
     }
 } 
-
-
 
 
 export default TheftReportPageContainer;

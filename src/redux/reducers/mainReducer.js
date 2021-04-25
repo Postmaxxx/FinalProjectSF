@@ -1,3 +1,21 @@
+class FetchProto { 
+    constructor() {
+        this.isFetching = '',
+        this.success = '',
+        this.error = ''
+    }
+}
+
+
+function setState(isFetching, fetchErrors, fetchSucess) { // Просто оборачивание в объект
+    return {
+        isFetching,
+        fetchErrors,
+        fetchSucess
+    }
+}
+
+
 const initialState = {
     totalCasesInBase: 0,
     showLoginForm: true,
@@ -6,89 +24,28 @@ const initialState = {
     lastName: '',
     clientId: '',//'bmluYS5wb3N0bmlrb3ZhODdAeWFuZGV4LnJ1',
     autorized: false,
-    email: 'secret_mail@mail.ru',
-    password: '31415926',
+    email: 'secret_mail@mail.ru', //просто для удобства
+    password: '31415926', //просто для удобства
     rePassword: '',
     passwordsIdentical: false,
     token: '',
-
-
     fetching: {
-        receiveEmployees : {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        receiveCases: {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        reportCase: {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        logginIn: {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        updateCase: {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        updateEmployee: {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        deleteCase: {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        deleteEmployee: {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        createCase: {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        createEmployee: {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        register: {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        getDetailedCase: {
-            isFetching: false,
-            success: '',
-            error: ''
-        },
-        getDetailedEmployee: {
-            isFetching: false,
-            success: '',
-            error: ''
-        }
-    },
-
-
-
-    /*isFetching: false,
-    fetchErrors: '',
-    fetchSuccess: '',*/
-    //currentPage: '/public/mainpage'
-    
+        receiveEmployees: new FetchProto,
+        receiveCases: new FetchProto,
+        reportCase: new FetchProto,
+        logginIn: new FetchProto,
+        updateCase: new FetchProto,
+        updateEmployee: new FetchProto,
+        deleteCase: new FetchProto,
+        deleteEmployee: new FetchProto,
+        createCase: new FetchProto,
+        createEmployee: new FetchProto,
+        register: new FetchProto,
+        getDetailedCase: new FetchProto,
+        getDetailedEmployee: new FetchProto,
+    }
 };
+
 
 function mainReducer(state = initialState, action) {
     switch (action.type) {
@@ -107,7 +64,6 @@ function mainReducer(state = initialState, action) {
                 ...state,
                 email: action.email
             };
-
         case 'CHANGE_USER_PASSWORD':
             return {
                 ...state,
@@ -123,7 +79,6 @@ function mainReducer(state = initialState, action) {
                 ...state,
                 clientId: action.clientId
             };
-
         case 'CHANGE_USER_AUTORIZATION_STATUS':
             return {
                 ...state,
@@ -134,7 +89,6 @@ function mainReducer(state = initialState, action) {
                 ...state,
                 token: action.token
             };
-        
         case 'SHOW_USER_LOGIN_FORM':
             return {
                 ...state,
@@ -145,82 +99,36 @@ function mainReducer(state = initialState, action) {
                 ...state,
                 showRegistrationForm: action.showRegistrationForm
             }
-   /*     case 'CHANGE_CURRENT_PAGE':
+        case 'CHANGE_FETCHING':   // setFetching = ( fetchStatus напр. 'start', fetchObject напр. 'receiveEmployees', fetchInfo напр инфо об ошибке или успешно полученные данные )
+            let fetchObject = action.fetchObject;
+            let fetchStatus = action.fetchStatus;
+            let fetching = state.fetching;
+            let newFetchState;
+            switch (fetchStatus) {
+                case 'start':
+                    newFetchState  = setState(true, '') //isFetching, fetchErrors, fetchSucess, Просто оборачивание в объект
+                    break;
+                case 'success':
+                    newFetchState  = setState(false, '', action.fetchSucess) //isFetching, fetchErrors, fetchSucess
+                    break;
+                case 'error':
+                    newFetchState  = setState(false, action.fetchErrors, '') //isFetching, fetchErrors, fetchSucess
+                    break;
+                case 'clear':
+                    newFetchState  = setState(false, '', '') //isFetching, fetchErrors, fetchSucess
+                    break;
+                }
             return {
                 ...state,
-                currentPage: action.currentPage
-            }
-*/
-
-
-        case 'CHANGE_FETCHING':   // setFetching = ( fetchStatus, fetchObject, fetchInfo )
-            if (action.fetchStatus === 'start') {
-                let fetchObject = action.fetchObject;
-                let fetching = state.fetching;
-                return {
-                    ...state,
-                    fetching: {
-                        ...fetching,
-                        [fetchObject]: {
-                            isFetching: true,
-                            fetchErrors: '',
-                            fetchSucess: ''
-                        }
-                    }
+                fetching: {
+                    ...fetching,
+                    [fetchObject] : newFetchState //изменился только один объект в fetching
                 }
             }
-            if (action.fetchStatus === 'success') {
-                let fetchObject = action.fetchObject;
-                let fetching = state.fetching;
-                return {
-                    ...state,
-                    fetching: {
-                        ...fetching,
-                        [fetchObject]: {
-                            isFetching: false,
-                            fetchErrors: '',
-                            fetchSucess: action.fetchSucess
-                        }
-                        
-                    }
-                }
-            }            
-            if (action.fetchStatus === 'error') {
-                let fetchObject = action.fetchObject;
-                let fetching = state.fetching;
-                return {
-                    ...state,
-                    fetching: {
-                        ...fetching,
-                        [fetchObject]: {
-                            isFetching: false,
-                            fetchErrors: action.fetchErrors,
-                            fetchSucess: ''
-                        }
-                        
-                    }
-                }
-            }
-            if (action.fetchStatus === 'clear') {
-                let fetchObject = action.fetchObject;
-                let fetching = state.fetching;
-                return {
-                    ...state,
-                    fetching: {
-                        ...fetching,
-                        [fetchObject]: {
-                            isFetching: false,
-                            fetchErrors: '',
-                            fetchSucess: ''
-                        }
-                        
-                    }
-                }
-            }
-
 
         default: return state;
     }
 }
+
 
 export default mainReducer;

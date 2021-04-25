@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './MenuPublic.css';
-import { connect } from 'react-redux';
-
-
-
-
-
 
 
 class MenuPublic extends Component {
@@ -24,10 +18,8 @@ class MenuPublic extends Component {
                 </div>
             </div>
         )
-
     }
 }
-
 
 
 export default MenuPublic;

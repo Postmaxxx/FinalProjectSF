@@ -40,7 +40,6 @@ export const setClientId = clientId => {
     };
 };
 
-
 export const setAutorized = autorized => {
     return { 
         type: 'CHANGE_USER_AUTORIZATION_STATUS',
@@ -55,7 +54,6 @@ export const setToken = token => {
     };
 };
 
-
 export const setShowLoginForm = showLoginForm => {
         return {
             type: 'SHOW_USER_LOGIN_FORM',
@@ -69,16 +67,6 @@ export const setShowRegistrationForm = showRegistrationForm => {
             showRegistrationForm
         }
 };
-
-/*
-export const setCurrentPage = currentPage => {
-    return {
-        type: 'CHANGE_CURRENT_PAGE',
-        currentPage
-    }
-};
-*/
-
 
 export const setFetching = ( fetchStatus, fetchObject, fetchInfo ) => {
     if (fetchStatus === 'start') {

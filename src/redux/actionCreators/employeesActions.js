@@ -33,7 +33,6 @@ export const setShowEmployeeDetails = showEmployeeDetails => {
     };
 };
 
-
 export const setDetailedEmployeeId = detailedEmployeeId => {
     return { 
         type: 'CHANGE_DETAILED_EMPLOYEE_ID',
@@ -48,11 +47,9 @@ export const setDetailedEmployeeHeaderText = detailedEmployeeHeaderText => {
     };
 };
 
-
 export const setEmployeesObject = employeesObject => {
     return { 
         type: 'CHANGE_EMPLOYEES_OBJECT',
         employeesObject
     };
 };
-

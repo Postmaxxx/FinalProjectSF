@@ -1,39 +1,24 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import './AllCases.css'
 import Preloader from '../../Common/Preloader.jsx';
-import { connect } from 'react-redux';
 import AllCases from './AllCases.jsx';
 import CaseDetailsContainer from './CaseDetails/CaseDetailsContainer.jsx'
 import axios from 'axios';
-import { IndexedArray } from '../../Common/processors.js';
-
 import Modal from 'react-modal';
-
 
 
 class AllCasesContainer extends Component {
 
     componentDidMount() {
         this.props.receiveCasesEmployees({ cases: true, employees: true });
-        //if (!this.props.store.main.fetching.receiveCases.isFetching) {
-           /* let cases_table = document.querySelector('.cases-table');
-            console.log('cases_table = ', cases_table);
-            cases_table.addEventListener('click', ((e) => {this.tableClickProcessor(e)}))*/
-            Modal.setAppElement('body');
-            //console.log('listener');
-        //}
+        Modal.setAppElement('body');
     };
 
 
-
-
-    receiveCaseIdDetailsData = () => {
-        //console.log('Starting get ID Case data...');
+    receiveCaseIdDetailsData = () => { //Получение детальных данных дела
         let token = this.props.store.main.token;
         let _id = this.props.store.cases.detailedCaseId;
-        //console.log('receive id: ', _id);
-        this.props.mainActions.setFetching('start', 'getDetailedCase', 'Загрузка дела...');
+        this.props.mainActions.setFetching('start', 'getDetailedCase');
         axios.get(`http://84.201.129.203:8888/api/cases/${_id}`, {headers: {'Authorization': `Bearer ${token}`}})
         .then(response => {
             if (response.status === 200) {
@@ -45,9 +30,7 @@ class AllCasesContainer extends Component {
                 this.props.caseActions.setType(response.data.type);
                 this.props.caseActions.setOwnerFullName(response.data.ownerFullName);
                 this.props.caseActions.setOfficer(response.data.officer);
-                if (response.data.officer) {
-                    this.props.caseActions.setHasOfficer(true)
-                } else this.props.caseActions.setHasOfficer(false);
+                response.data.officer ? this.props.caseActions.setHasOfficer(true) : this.props.caseActions.setHasOfficer(false);
                 this.props.caseActions.setCreatedAt(response.data.createdAt);
                 this.props.caseActions.setUpdateAt(response.data.updateAt);
                 this.props.caseActions.setClientId(response.data.clientId);
@@ -63,16 +46,13 @@ class AllCasesContainer extends Component {
     };
 
 
-
-
-    tableClickProcessor = async(e) => {
-        if (e.target.nodeName === 'TD') {
-            //let case_id = e.path[1].attributes._id.value; 
-            let case_id = e.target.parentElement.attributes._id.nodeValue;
-            await this.props.casesActions.setDetailedCaseId(case_id);
-            this.receiveCaseIdDetailsData();
-            this.props.casesActions.setShowCaseDetails(true);
-            this.props.casesActions.setDetailedCaseHeaderText('Подробная информация о выбранном случае');
+    tableClickProcessor = async(e) => { //обработчик кликов по таблице
+        if (e.target.nodeName === 'TD') { //если кликнули по ячейке с инфой
+            let caseId = e.target.parentElement.attributes._id.nodeValue; //caseId = значение атрибута _id строки этой ячейки, задаваемого принудительно при отрисовке
+            await this.props.casesActions.setDetailedCaseId(caseId); //если не ждать, то при получении ошибка, т.к. caseId не успевает записываться в store
+            this.props.casesActions.setDetailedCaseHeaderText('Подробная информация о выбранном случае'); //установка заголовка окна редактирования
+            this.receiveCaseIdDetailsData(); //получение детальнои информации о сотруднике
+            this.props.casesActions.setShowCaseDetails(true); //показывать окно редактирования
         }
     };
 
@@ -82,8 +62,7 @@ class AllCasesContainer extends Component {
     }
 
 
-
-    onAddCaseButtonClick = () => {
+    onAddCaseButtonClick = () => { //нажатие на кнопку Добавлене дела
         let current_date = new Date().toISOString().split('T')[0];
         this.props.caseActions.setStatus('new');
         this.props.caseActions.setDate('');
@@ -98,16 +77,9 @@ class AllCasesContainer extends Component {
         this.props.caseActions.setClientId(this.props.store.main.clientId);
         this.props.caseActions.setDescription('');
         this.props.caseActions.setResolution('');
-        this.props.casesActions.setDetailedCaseId('');
-        this.props.casesActions.setDetailedCaseHeaderText('Создание нового случая');
-        this.props.casesActions.setShowCaseDetails(true);
-    }
-
-    preloaderTest = () => {
-        //this.props.mainActions.setFetching('start', 'receiveCases', 'nothing');
-        console.log('main = ', this.props.store.employees);
-        console.log('!', this.props.store.employees.employeesArray[1]);
-        console.log('findById', this.props.store.employees.employeesArray.findById('60692c2e0bd7590011f3abc5'));
+        this.props.casesActions.setDetailedCaseId(''); //у нового дела нет id
+        this.props.casesActions.setDetailedCaseHeaderText('Создание нового случая'); //установка заголовка окна редактирования
+        this.props.casesActions.setShowCaseDetails(true); //показывать окно редактирования
     }
 
 
@@ -116,15 +88,14 @@ class AllCasesContainer extends Component {
             <div className='all-cases-container'>
                 <h1 className='all-cases-container__header'>Информация о кражах велосипедов</h1>
                 <p className='all-cases-container__subheader'>Список всех зарегистрированных случаев кражи велосипедов</p>
-                <button onClick={this.preloaderTest}>Preloader</button>
                 <button className='all-cases-container__add-button' onClick={this.onAddCaseButtonClick} />
 
-                {this.props.store.main.fetching.receiveCases.isFetching ? <Preloader {...this.props} preloaderText='Загрузка списка дел...'/>
-                : <AllCases {...this.props} onTableClick={this.tableClickProcessor}/>}
+                {this.props.store.main.fetching.receiveCases.isFetching ? 
+                    <Preloader {...this.props} preloaderText='Загрузка списка дел...'/> :
+                    <AllCases {...this.props} onTableClick={this.tableClickProcessor}/>}
 
                 <Modal
                     isOpen={this.props.store.cases.showCaseDetails}
-                    //contentLabel="Minimal Modal Example"
                     shouldCloseOnOverlayClick={true}
                     shouldCloseOnEsc={true}
                     onRequestClose={this.closeModal}
@@ -137,55 +108,16 @@ class AllCasesContainer extends Component {
                             outline: 'none'
                         }
                     }}
-                    >
-                    {this.props.store.main.fetching.getDetailedCase.isFetching ? <Preloader {...this.props} preloaderText='Загрузка делa...' marginTop='200px' marginLeft='auto'/> 
-                    : <CaseDetailsContainer {...this.props} />
+                >
+                    {this.props.store.main.fetching.getDetailedCase.isFetching ? //если идет загрузка - показывать preloader вместо детальной инфы
+                        <Preloader {...this.props} preloaderText='Загрузка делa...' marginTop='200px' marginLeft='auto'/> :
+                        <CaseDetailsContainer {...this.props} />
                     }
                 </Modal>
-
             </div>
-
         )
     }
 }
 
 
-/*
-
-
-*/
-/*
-style={{
-              overlay: {
-                backgroundColor: 'papayawhip'
-              },
-              content: {
-                color: 'lightsteelblue'
-              }
-            }}
-
-                    className="Modal"
-                    overlayClassName="Overlay"
-*/
-
-
-
 export default AllCasesContainer;
-
-
-/*
-                <ReactModal 
-                    isOpen={this.props.store.cases.showCaseDetails}
-                    contentLabel="Inline Styles Modal Example"
-                    style={{
-                        overlay: {
-                            backgroundColor: 'papayawhip'
-                        },
-                        content: {
-                            color: 'lightsteelblue'
-                        }
-                    }}
-                >
-                    <p>DETEILED INFO</p>
-                </ReactModal>
-                */

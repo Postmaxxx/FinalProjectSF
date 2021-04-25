@@ -1,17 +1,12 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
-//import './MainPage.css';
-import store from '../../../redux/store';
-import { connect } from 'react-redux';
+import React from 'react';
 import { changeInputStyle, toggleElementAttribute } from '../../Common/processors.js';
 
 
 const LoginPage = (props) => {
 
-
-    const onShowPasswordClick = () => {
-        changeInputStyle('.show-passwords-icon', 'toggle', 'visiblePassword');
-        toggleElementAttribute('.password-input', 'type', 'text', 'password');
+    const onShowPasswordClick = () => { //Показать пароль
+        changeInputStyle('.show-passwords-icon', 'toggle', 'visiblePassword'); //Объект, тип действия, класс
+        toggleElementAttribute('.password-input', 'type', 'text', 'password'); //Объект, тип действия, значение1, значение2
     }
 
 
@@ -20,11 +15,13 @@ const LoginPage = (props) => {
         props.mainActions.setEmail(email);
     }
 
+
     const onChangePassword = e => {
         let password = e.target.value;
         props.mainActions.setPassword(password);
     }
 
+    
     return (
         <div className='log-reg-page-container__form-area'>
             <div className='log-reg-page-container__form-area__input_area'>
@@ -55,7 +52,6 @@ const LoginPage = (props) => {
         </div>
     )
 }
-
 
 
 export default LoginPage;

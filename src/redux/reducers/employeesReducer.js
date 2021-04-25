@@ -1,5 +1,6 @@
 import { IndexedEmployeeArray } from '../../components/Common/processors.js';
 
+
 const initialState = {
     employeesArray: new IndexedEmployeeArray([]),
     showEmployeeDetails: false,
@@ -9,6 +10,7 @@ const initialState = {
 };
 
 let newEmployeesArray;
+
 
 function employeesReducer(state = initialState, action) {
     switch (action.type) {
@@ -38,7 +40,6 @@ function employeesReducer(state = initialState, action) {
                 ...state,
                 employeesArray: newEmployeesArray
             };
-
         case 'CHANGE_SHOW_EMPLOYEE_DETAILS':
             return {
                 ...state,
@@ -63,5 +64,6 @@ function employeesReducer(state = initialState, action) {
         default: return state;
     }
 }
+
 
 export default employeesReducer;

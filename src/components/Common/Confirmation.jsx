@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Confirmation.css';
-import { connect } from 'react-redux';
 
 
-const Confirmation = (props) => {
-    //console.log('Confirmation');
+const Confirmation = (props) => { //Получает текст, названия левой и правой кнопки и действия для левой и правой кнопки
     return (
         <div className='confirmation-container'>
             <p className='confirmation-container__text'>{props.store.confirmation.confirmationMainText}</p>
@@ -15,10 +13,6 @@ const Confirmation = (props) => {
         </div>
     )
 }
-
-
-
-
 
 
 export default Confirmation;

@@ -1,9 +1,5 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
-//import './MainPage.css';
-import store from '../../../redux/store';
-import { connect } from 'react-redux';
-import { changeInputStyle, transformInputValue, toggleElementAttribute, comparePasswords } from '../../Common/processors.js';
+import React from 'react';
+import { changeInputStyle, toggleElementAttribute, comparePasswords } from '../../Common/processors.js';
 
 
 const RegistrationPage = (props) => {
@@ -12,6 +8,7 @@ const RegistrationPage = (props) => {
         let firstName = e.target.value;
         props.mainActions.setFirstName(firstName);
     }
+
 
     const onChangeLastName = e => {
         let lastName = e.target.value;
@@ -25,17 +22,17 @@ const RegistrationPage = (props) => {
     }
 
 
-
     const onChangePassword = e => {
         let password = e.target.value;
         props.mainActions.setPassword(password);
         comparePasswords(password, props.store.main.rePassword, '#register__input-repassword');
     };
 
+
     const onChangeRePassword = e => {
-        let re_password = e.target.value;
-        props.mainActions.setRePassword(re_password);
-        comparePasswords(props.store.main.password, re_password, '#register__input-repassword');
+        let rePassword = e.target.value;
+        props.mainActions.setRePassword(rePassword);
+        comparePasswords(props.store.main.password, rePassword, '#register__input-repassword');
     };
 
 
@@ -44,13 +41,14 @@ const RegistrationPage = (props) => {
         props.mainActions.setClientId(clientID);
     }
 
-    const onShowPasswordClick = () => {
-        changeInputStyle('.show-passwords-register-icon', 'toggle', 'visiblePassword');
-        toggleElementAttribute('#register__input-password', 'type', 'text', 'password');
+
+    const onShowPasswordClick = () => { //Показать пароль
+        changeInputStyle('.show-passwords-register-icon', 'toggle', 'visiblePassword'); //Объект, тип действия, класс
+        toggleElementAttribute('#register__input-password', 'type', 'text', 'password'); //Объект, тип действия, значение1, значение2
         toggleElementAttribute('#register__input-repassword','type', 'text', 'password');
     }
 
-
+    
     return (
         <div className='log-reg-page-container__form-area'>
             <div className='log-reg-page-container__form-area__input_area'>
@@ -118,8 +116,6 @@ const RegistrationPage = (props) => {
         </div>
     )
 }
-
-//                <button onClick={props.onAdminButtonClick}>Autorize me now!</button>
 
 
 export default RegistrationPage;

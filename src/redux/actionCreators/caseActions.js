@@ -40,14 +40,12 @@ export const setOwnerFullName = ownerFullName => {
     };
 };
 
-
 export const setOfficer = officer => {
     return { 
         type: 'CHANGE_CASE_OFFICER',
         officer
     };
 };
-
 
 export const setCreatedAt = createdAt => {
         return {
@@ -90,5 +88,3 @@ export const setHasOfficer = hasOfficer => {
         hasOfficer
     }
 };
-
-

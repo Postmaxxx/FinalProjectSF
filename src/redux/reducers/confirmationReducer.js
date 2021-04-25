@@ -4,6 +4,7 @@ const initialState = {
     shouldCloseOnEsc: false
 };
 
+
 function confirmationReducer(state = initialState, action) {
     switch (action.type) {
         case 'CHANGE_SHOW_CONFIRMATION':
@@ -47,9 +48,9 @@ function confirmationReducer(state = initialState, action) {
                 shouldCloseOnEsc: action.shouldCloseOnEsc
             }
 
-
         default: return state;
     }
 }
+
 
 export default confirmationReducer;

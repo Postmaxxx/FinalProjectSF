@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
-
+import { Route } from 'react-router-dom';
 import MainPageContainer from './MainPage/MainPageContainer.jsx';
 import TheftReportPageContainer from './TheftReportPage/TheftReportPageContainer.jsx';
 import LoginRegistrationPageContainer from './LoginPage/LoginRegistrationPageContainer.jsx';
@@ -16,7 +14,6 @@ class PublicContainer extends Component {
                 <Route path='/public/login' render={() => <LoginRegistrationPageContainer {...this.props}/>} exact={true} />
             </div>
         )
-
     }
 }
 
