@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 
 module.exports = {
+    mode: 'development',
     entry: path.resolve(__dirname, 'src', 'index.jsx'),
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -23,7 +24,11 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader'],
-            }
+            },
+            {
+                test: /\.(png|jpg)$/,
+                loader: 'url-loader'
+              }
         ],
     },
 
@@ -39,5 +44,9 @@ module.exports = {
     ],
     devServer: {
         historyApiFallback: true,
-    }
+        contentBase: './',
+        hot: true 
+    },
+
 }
+
