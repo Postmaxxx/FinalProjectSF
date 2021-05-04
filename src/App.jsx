@@ -51,7 +51,7 @@ class App extends Component {
                         <Route path='/public' render={() => <PublicContainer {...this.props}/>} />
                         <Route path='/admin' render={() => <AdminContainer {...this.props}/>} />
                     </Switch>
-                </div>
+                </div> 
 
                 <React.Suspense fallback={<ComponentPreloader />}>
                     <Footer  {...this.props}/>
