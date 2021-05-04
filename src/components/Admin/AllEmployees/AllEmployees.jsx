@@ -8,10 +8,10 @@ const AllEmployees = (props) => {
         let approved = item.approved; //добавление *, если сотрудник не одобрен
         return ( //добавление атрибута _id={item._id} к каждой строке
             <tr className={approved ? 'employees-table__data' : 'employees-table__data not-approved'} _id={item._id} key={item._id}>
-                <td>{approved ? null : '*'}{item.email}</td> 
-                <td>{approved ? null : '*'}{item.firstName}</td>
-                <td>{approved ? null : '*'}{item.lastName}</td>
-                <td>{approved ? null : '*'}{item._id}</td>
+                <td>{!approved && '*'}{item.email}</td> 
+                <td>{!approved && '*'}{item.firstName}</td>
+                <td>{!approved && '*'}{item.lastName}</td>
+                <td>{!approved && '*'}{item._id}</td>
                 {item.approved === true ? (<td>Да</td>) : (<td>Нет</td>) }
             </tr>
         )

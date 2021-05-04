@@ -1,0 +1,57 @@
+.cssload-container{
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	flex-direction: column;
+	margin:49px auto;
+	width:800px;
+    height: 50vh;
+}
+
+.cssload-container__text {
+	font-size: 3rem;
+    font-weight: 600;
+    color: rgb(33,150,243);
+
+}
+
+.cssload-loading i{
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	border-radius: 50%;
+	background: rgb(33,150,243);
+}
+.cssload-loading i:first-child{
+	opacity: 0;
+	animation:cssload-loading-ani2 0.58s linear infinite;
+	transform:translate(-30px);
+}
+.cssload-loading i:nth-child(2),
+.cssload-loading i:nth-child(3){
+	animation:cssload-loading-ani3 0.58s linear infinite;
+}
+.cssload-loading i:last-child{
+	animation:cssload-loading-ani1 0.58s linear infinite;
+}
+
+
+@keyframes cssload-loading-ani1{
+	100%{
+		transform:translate(39px);
+		opacity: 0;
+	}
+}
+
+@keyframes cssload-loading-ani2{
+	100%{
+		transform:translate(30px);
+		opacity: 1;
+	}
+}
+
+@keyframes cssload-loading-ani3{
+	100%{
+		transform:translate(30px);
+	}
+}

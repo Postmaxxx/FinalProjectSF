@@ -20,10 +20,10 @@ const MenuAdmin = (props) => {
         <div className='menu-admin'>
             <div className='menu-admin__nav'>
                 <div className='menu-admin__item'>
-                    <NavLink to="/admin/all_cases" activeClassName="menu-admin__item_is-active"/* onClick={changePage}*/>Украденные велосипеды</NavLink>
+                    <NavLink to="/admin/all_cases" activeClassName="menu-admin__item_is-active">Украденные велосипеды</NavLink>
                 </div>
                 <div className='menu-admin__item'>
-                    <NavLink to="/admin/all_employees" activeClassName="menu-admin__item_is-active"/* onClick={changePage}*/>Сотрудники</NavLink>
+                    <NavLink to="/admin/all_employees" activeClassName="menu-admin__item_is-active">Сотрудники</NavLink>
                 </div>
             </div>
             <div className='menu-admin__exit'>

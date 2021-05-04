@@ -6,20 +6,20 @@ const Footer = (props) => {
 
     let current_page = props.history.location.pathname;
     let autorized = props.store.main.autorized;
+    let btn = 'footer__navigation__item__button';
 
-    let mainpage_style = 'footer__navigation__item__button footer__navigation__item__button__mainpage';
-    let mainpage_selected_style = 'footer__navigation__item__button footer__navigation__item__button__mainpage button_selected';
-    let theft_report_style = 'footer__navigation__item__button footer__navigation__item__button__theft-report';
-    let theft_report_selected_style = 'footer__navigation__item__button footer__navigation__item__button__theft-report button_selected';
-    let login_style = 'footer__navigation__item__button footer__navigation__item__button__login';
-    let login_selected_style = 'footer__navigation__item__button footer__navigation__item__button__login button_selected';
+    let mainpage_style = [btn, `${btn}__mainpage`]; // footer__navigation__item__button, footer__navigation__item__button__mainpage
+    let theft_report_style = [btn, `${btn}__theft-report`];
+    let login_style = [btn, `${btn}__login`];
+    let all_cases_style = [btn, `${btn}__all-cases`];
+    let all_employees_style = [btn, `${btn}__all_employees`];
+    let logoff_style = [btn, `${btn}__logoff`];
 
-    let all_cases_style = 'footer__navigation__item__button footer__navigation__item__button__all-cases';
-    let all_cases_selected_style = 'footer__navigation__item__button footer__navigation__item__button__all-cases button_selected';
-    let all_employees_style = 'footer__navigation__item__button footer__navigation__item__button__all_employees';
-    let all_employees_selected_style = 'footer__navigation__item__button footer__navigation__item__button__all_employees button_selected';
-    let logoff_style = 'footer__navigation__item__button footer__navigation__item__button__logoff';
-
+    current_page==='/public/mainpage' && mainpage_style.push('button_selected')
+    current_page==='/public/theft-report' && theft_report_style.push('button_selected')
+    current_page==='/public/login' && login_style.push('button_selected')
+    current_page==='/admin/all_cases' && all_cases_style.push('button_selected')
+    current_page==='/admin/all_employees' && all_employees_style.push('button_selected')
 
     const logoff = () => {
         let response = confirm('Вы уверены, что хотите выйти?')
@@ -36,15 +36,15 @@ const Footer = (props) => {
         return(
             <>
                 <button 
-                    className={current_page==='/public/mainpage' ? mainpage_selected_style : mainpage_style}
+                    className={mainpage_style.join(' ')}
                     onClick={() => props.history.push('/public/mainpage')} 
                 />              
                 <button 
-                    className={current_page==='/public/theft-report' ? theft_report_selected_style : theft_report_style}
+                    className={theft_report_style.join(' ')}
                     onClick={() =>  props.history.push('/public/theft-report')} 
                 />
                 <button 
-                    className={current_page==='/public/login' ? login_selected_style : login_style}
+                    className={login_style.join(' ')}
                     onClick={() => props.history.push('/public/login')} 
                 />
             </>
@@ -56,15 +56,15 @@ const Footer = (props) => {
         return(
             <>
                 <button 
-                    className={current_page==='/admin/all_cases' ? all_cases_selected_style : all_cases_style}
+                    className={all_cases_style.join(' ')}
                     onClick={() => props.history.push('/admin/all_cases')} 
                 />              
                 <button 
-                    className={current_page==='/admin/all_employees' ? all_employees_selected_style : all_employees_style}
+                    className={all_employees_style.join(' ')}
                     onClick={() =>  props.history.push('/admin/all_employees')} 
                 />
                 <button 
-                    className={logoff_style}
+                    className={logoff_style.join(' ')}
                     onClick={logoff} 
                 />
             </>

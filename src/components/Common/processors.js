@@ -52,10 +52,12 @@ export const checkContentType = (text, type) => { //Проверка текст�
 }
 
 
-export const comparePasswords = (pass, rePass, element) =>  { //сравнение паролей
-    pass === rePass ? 
-        changeInputStyle(element, 'add', 'input_similar') :
-        changeInputStyle(element, 'remove', 'input_similar')
+export const comparePasswords = (pass, rePass, elements) =>  { //сравнение паролей
+    elements.forEach(element => {
+        pass === rePass ? 
+            changeInputStyle(element, 'add', 'input_similar') :
+            changeInputStyle(element, 'remove', 'input_similar')
+    })
 }
 
 

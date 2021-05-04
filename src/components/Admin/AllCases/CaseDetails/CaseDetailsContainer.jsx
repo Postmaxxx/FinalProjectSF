@@ -45,9 +45,9 @@ class CaseDetailsContainer extends Component {
         let { date, ownerFullName, bikeType, color, licenseNumber, officer, description, resolution, status, hasOfficer} = this.props.store.case;
         let approved = false; // по умолчанию сотрудник не одобрен
         let officerExist = this.props.store.employees.employeesArray.isExist(officer);
-        if (officerExist) {
-            approved = this.props.store.employees.employeesArray.findById(officer).approved;
-        }
+        //if (officerExist) {
+            approved = this.props.store.employees.employeesArray.findById(officer)?.approved;
+        //}
 
         if (date === '') {
             errorsArray.push('Не указана дата кражи велосипеда');
@@ -145,19 +145,15 @@ class CaseDetailsContainer extends Component {
         let itemInArray = false;   //флаг, что дело с данным currentId уже в базе
         let newCasesArray = this.props.store.cases.casesArray.map(item => { //Поиск дела в базе по _id и коррекция дела, если оно есть
             if (item._id === currentId) { 
-                itemInArray = true; 
-                return ({ //добавляем поле _id к caseCorrected
-                    _id: item._id,
-                    ...caseCorrected
-                })
-            } else return item;
+                itemInArray = true; //дело есть в базе
+                caseCorrected._id = item._id;  //добавляем поле _id к caseCorrected, т.к. там в нем нет _id
+                return caseCorrected
+            } 
+            return item;
         });
         if (!itemInArray) {  //если дела с таким ID нет
-            let newCase = { //добавляем поле _id к caseCorrected
-                _id: currentId,
-                ...caseCorrected
-            }
-            newCasesArray = [...this.props.store.cases.casesArray, newCase] //добавление нового дела к базе
+            caseCorrected._id = currentId; //добавляем поле _id к caseCorrected, т.к. там в нем нет _id
+            newCasesArray.push(caseCorrected) //добавление нового дела к базе
         } 
         this.props.casesActions.setCasesArray(newCasesArray);
     }
@@ -165,7 +161,7 @@ class CaseDetailsContainer extends Component {
 
     deleteCaseFromArray = (currentId) => { //удаление дела с ID=currentId из массива дел
         let itemIndex = this.props.store.cases.casesArray.findIndex((item) => {
-            return currentId===item._id
+            return item._id === currentId
         })
         let newCasesArray = [...this.props.store.cases.casesArray];
         newCasesArray.splice(itemIndex, 1);
@@ -186,7 +182,7 @@ class CaseDetailsContainer extends Component {
         delete caseCorrected.bikeType; //эти данные не нужны при отправке, вместо bikeType -> type
         delete caseCorrected.hasOfficer; //эти данные не нужны при отправке
 
-        if (_id) {
+        if (_id) { //если дело редактируется
            this.props.mainActions.setFetching('start', 'updateCase');
             axios.put(`http://84.201.129.203:8888/api/cases/${_id}`, caseCorrected, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
@@ -196,16 +192,14 @@ class CaseDetailsContainer extends Component {
                     if (!this.props.store.case.hasOfficer && this.props.store.case.officer) { //если назначенного сотрудника не было, но мы при редактировании назначили
                         this.props.caseActions.setHasOfficer(true);
                     }
-                    if (shouldExit) {
-                        this.closeDetails();
-                    }
+                    shouldExit && this.closeDetails();
                 }
             })
             .catch(error => {
                 this.props.mainActions.setFetching('error', 'updateCase', `Произошла ошибка при редактировании дела: ${error.response.status} ( ${error.message} )`);
                 alert(error.response);
             })
-        } else {
+        } else { //если новое дело
             this.props.mainActions.setFetching('start', 'createCase');
             axios.post('http://84.201.129.203:8888/api/cases', caseCorrected, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
@@ -214,13 +208,8 @@ class CaseDetailsContainer extends Component {
                     let currentId = response.data._id;
                     this.props.casesActions.setDetailedCaseId(_id);
                     this.applyChangesToArray(currentId, caseCorrected);
-                    if (this.props.store.case.officer) { //если офицера указали при добавлении дела
-                        this.props.caseActions.setHasOfficer(true); 
-                    }
-
-                    if (shouldExit) {
-                        this.closeDetails();
-                    }
+                    this.props.store.case.officer && this.props.caseActions.setHasOfficer(true); //если офицера указали при добавлении дела
+                    shouldExit && this.closeDetails();
                 }
             })
             .catch(error => {

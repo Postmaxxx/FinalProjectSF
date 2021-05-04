@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import './App.css';
 import { bindActionCreators } from 'redux';
 import MenuContainer from './components/Menu/MenuContainer.jsx';
-import Footer from './components/Footer/Footer.jsx';
+//import Footer from './components/Footer/Footer.jsx';
+import ComponentPreloader from './components/Common/componentPreloader.js';
 import AdminContainer from './components/Admin/AdminContainer.jsx';
 import PublicContainer from './components/Public/PublicContainer.jsx';
 
@@ -15,6 +16,7 @@ import * as employeesActions from './redux/actionCreators/employeesActions.js';
 import * as employeeActions from './redux/actionCreators/employeeActions.js';
 import * as confirmationActions from './redux/actionCreators/confirmationActions.js';
 
+const Footer = React.lazy(() => import('./components/Footer/Footer.jsx'))
 
 
 class App extends Component {
@@ -50,8 +52,10 @@ class App extends Component {
                         <Route path='/admin' render={() => <AdminContainer {...this.props}/>} />
                     </Switch>
                 </div>
-  
-                <Footer  {...this.props}/>
+
+                <React.Suspense fallback={<ComponentPreloader />}>
+                    <Footer  {...this.props}/>
+                </React.Suspense>
             </div>
         );
     }

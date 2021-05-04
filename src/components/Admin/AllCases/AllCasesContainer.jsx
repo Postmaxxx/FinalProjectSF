@@ -92,7 +92,8 @@ class AllCasesContainer extends Component {
 
                 {this.props.store.main.fetching.receiveCases.isFetching ? 
                     <Preloader {...this.props} preloaderText='Загрузка списка дел...'/> :
-                    <AllCases {...this.props} onTableClick={this.tableClickProcessor}/>}
+                    <AllCases {...this.props} onTableClick={this.tableClickProcessor}/>
+                }
 
                 <Modal
                     isOpen={this.props.store.cases.showCaseDetails}

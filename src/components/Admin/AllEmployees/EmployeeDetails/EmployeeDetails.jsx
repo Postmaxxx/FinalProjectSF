@@ -30,7 +30,7 @@ const EmployeeDetails = (props) => {
         let password = e.target.value;
         props.employeeActions.setPassword(password);
         changeInputStyle('#employee-details-container__input-password', 'remove', 'input_uncorrected');
-        comparePasswords(password, props.store.employee.rePassword, '#employee-details-container__input-repassword');
+        comparePasswords(password, props.store.employee.rePassword, ['#employee-details-container__input-repassword', '#employee-details-container__input-password']);
     };
 
 
@@ -38,7 +38,7 @@ const EmployeeDetails = (props) => {
         let rePassword = e.target.value;
         props.employeeActions.setRePassword(rePassword);
         changeInputStyle('#employee-details-container__input-repassword', 'remove', 'input_uncorrected');
-        comparePasswords(props.store.employee.password, rePassword, '#employee-details-container__input-repassword');
+        comparePasswords(props.store.employee.password, rePassword, ['#employee-details-container__input-repassword', '#employee-details-container__input-password']);
     };
 
 

@@ -112,18 +112,12 @@ class LoginRegistrationPageContainer extends Component {
                             <button className='log-reg-page-container__switchers-area__button-log-reg log-reg-page-container__switchers-area__button-registration' onClick={this.onRegistrationButtonClick}>Регистрация</button>
                         </div>
 
-                        {this.props.store.main.showLoginForm ? <LoginPage {...this.props} /> : null }
-                        {this.props.store.main.showRegistrationForm ? <RegistrationPage {...this.props} /> : null }
+                        {this.props.store.main.showLoginForm && <LoginPage {...this.props} />}
+                        {this.props.store.main.showRegistrationForm && <RegistrationPage {...this.props} />}
                     
                         <div className='log-reg-page-container__buttons-area'>
-                            {this.props.store.main.showLoginForm ? 
-                                (<button className='log-reg-page-container__form-area__buttons_area__button-log-reg' onClick={this.onEnterButtonClick}>Войти</button>) : 
-                                null 
-                            }
-                            {this.props.store.main.showRegistrationForm ? 
-                                (<button className='log-reg-page-container__form-area__buttons_area__button-log-reg' onClick={this.onRegisterButtonClick}>Зарегистрироваться</button>) : 
-                                null 
-                            }
+                            {this.props.store.main.showLoginForm && <button className='log-reg-page-container__form-area__buttons_area__button-log-reg' onClick={this.onEnterButtonClick}>Войти</button>}
+                            {this.props.store.main.showRegistrationForm && <button className='log-reg-page-container__form-area__buttons_area__button-log-reg' onClick={this.onRegisterButtonClick}>Зарегистрироваться</button>}
                         </div>
                     </div> 
                 } 

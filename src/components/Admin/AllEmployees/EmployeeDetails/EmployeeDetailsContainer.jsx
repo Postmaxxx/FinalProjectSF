@@ -120,9 +120,7 @@ class EmployeeDetailsContainer extends Component {
                     this.props.mainActions.setFetching('success', 'updateEmployee', 'Редактирование сотрудника успешно завершено!');
                     employeeСorrected._id = _id; //добавляем поле _id
                     this.props.employeesActions.setEditEmployee(employeeСorrected); //обновляем массив сотрудников
-                    if (shouldExit) {
-                        this.closeDetails();
-                    }
+                    shouldExit && this.closeDetails();
                 }
             })
             .catch(error => {
@@ -139,9 +137,7 @@ class EmployeeDetailsContainer extends Component {
                     this.props.mainActions.setFetching('success', 'createEmployee', 'Создание сотрудника успешно завершено!');
                     employeeСorrected._id = _id; //добавляем поле _id
                     this.props.employeesActions.setAddEmployeeToEnd(employeeСorrected); //обновляем массив сотрудников путем добавления нового сотрудника в конец массива
-                    if (shouldExit) {
-                        this.closeDetails();
-                    }
+                    shouldExit && this.closeDetails();
                 }
             })
             .catch(error => {

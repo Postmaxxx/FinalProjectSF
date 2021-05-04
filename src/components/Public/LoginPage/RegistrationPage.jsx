@@ -25,14 +25,14 @@ const RegistrationPage = (props) => {
     const onChangePassword = e => {
         let password = e.target.value;
         props.mainActions.setPassword(password);
-        comparePasswords(password, props.store.main.rePassword, '#register__input-repassword');
+        comparePasswords(password, props.store.main.rePassword, ['#register__input-repassword', '#register__input-password']);
     };
 
 
     const onChangeRePassword = e => {
         let rePassword = e.target.value;
         props.mainActions.setRePassword(rePassword);
-        comparePasswords(props.store.main.password, rePassword, '#register__input-repassword');
+        comparePasswords(props.store.main.password, rePassword, ['#register__input-repassword', '#register__input-password']);
     };
 
 

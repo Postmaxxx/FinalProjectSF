@@ -77,8 +77,9 @@ class AllEmployeesContainer extends Component {
                 <button className='all-employees-container__add-button' onClick={this.onAddEmployeeButtonClick} />
 
                 {this.props.store.main.fetching.receiveEmployees.isFetching ? 
-                    <Preloader {...this.props} preloaderText='Загрузка...'/> :
-                    <AllEmployees {...this.props} onTableClick={this.tableClickProcessor} />}
+                    <Preloader {...this.props} preloaderText='Загрузка списка сотрудников...'/> :
+                    <AllEmployees {...this.props} onTableClick={this.tableClickProcessor} />
+                }
             
                 <Modal
                     isOpen={this.props.store.employees.showEmployeeDetails}

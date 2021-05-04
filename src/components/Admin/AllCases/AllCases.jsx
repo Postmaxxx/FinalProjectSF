@@ -8,10 +8,10 @@ const AllCases = (props) => {
         let firstName = undefined; //По умолчанию сотрудника нет в базе
         let lastName = undefined; 
         
-        if (props.store.employees.employeesArray.isExist(officerID)) { //Если сотрудник есть в базе
-            firstName = props.store.employees.employeesArray.findById(officerID).firstName; //ищем по ID в employeesArray
-            lastName = props.store.employees.employeesArray.findById(officerID).lastName;
-        }
+        //if (props.store.employees.employeesArray.isExist(officerID)) { //Если сотрудник есть в базе
+            firstName = props.store.employees.employeesArray.findById(officerID)?.firstName; //ищем по ID в employeesArray
+            lastName = props.store.employees.employeesArray.findById(officerID)?.lastName;
+        //}
         
         return (
             <tr className='cases-table__data' _id={item._id} key={item._id}>
@@ -20,8 +20,8 @@ const AllCases = (props) => {
                 <td>{item.date.slice(0,10)}</td>
                 <td>{item.ownerFullName}</td>
                 
-                {item.bikeType==='general' ? (<td>Обычный</td>) : null }
-                {item.bikeType==='sport' ? (<td>Спортивный</td>) : null }
+                {item.bikeType==='general' && <td>Обычный</td>}
+                {item.bikeType==='sport' && <td>Спортивный</td>}
                 
                 <td>{item.color}</td>
                 <td>{item.licenseNumber}</td>
@@ -35,9 +35,9 @@ const AllCases = (props) => {
 
                 {item.description.length > 40 ? (<td>{item.description.slice(0,40)+'...'}</td>) : (<td>{item.description}</td>)}
                 
-                {item.status==='new' ? (<td>Новое</td>) : null }
-                {item.status==='in_progress' ? (<td>В работе</td>) : null }
-                {item.status==='done' ? (<td>Закрыто</td>) : null }
+                {item.status==='new' && <td>Новое</td> }
+                {item.status==='in_progress' && <td>В работе</td> }
+                {item.status==='done' && <td>Закрыто</td> }
                 
                 {item.status === 'done' ? 
                     (item.resolution.length > 20 ? (<td>{item.resolution.slice(0,20)+'...'}</td>) : (<td>{item.resolution}</td>)) :
