@@ -8,9 +8,9 @@
     "webpack": "webpack",
     "start": "webpack serve",
     "build": "webpack --mode production",
-    "commit-cz": "git-cz",
+    "cz": "git-cz",
     "c1": "git add *",
-    "c2": "npm run commit-cz",
+    "c2": "npm run cz",
     "c3": "git push",
     "commit": "npm run c1 && npm run c2 && npm run c3"
   },
