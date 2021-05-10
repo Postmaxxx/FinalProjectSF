@@ -74,7 +74,9 @@ class AllEmployeesContainer extends Component {
             <div className='all-employees-container'>
                 <h1 className='all-employees-container__header'>Информация о сотрудниках</h1>
                 <p className='all-employees-container__subheader'>Список всех сотрудников</p>
-                <button className='all-employees-container__add-button' onClick={this.onAddEmployeeButtonClick} />
+                <div className='all-employees-container__add-button-container'>
+                    <button className='all-employees-container__add-button' onClick={this.onAddEmployeeButtonClick} />
+                </div>
 
                 {this.props.store.main.fetching.receiveEmployees.isFetching ? 
                     <Preloader {...this.props} preloaderText='Загрузка списка сотрудников...'/> :

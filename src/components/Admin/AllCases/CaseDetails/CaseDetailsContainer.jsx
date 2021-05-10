@@ -172,7 +172,7 @@ class CaseDetailsContainer extends Component {
     applyDetails = (shouldExit) => { //Применение изменений
         let _id = this.props.store.cases.detailedCaseId;
         let token = this.props.store.main.token;
-        let current_date = new Date().toISOString().split('T')[0];
+        let current_date = new Date().toLocaleDateString();
 
         let caseCorrected = { //измененное дело
             ...this.props.store.case,

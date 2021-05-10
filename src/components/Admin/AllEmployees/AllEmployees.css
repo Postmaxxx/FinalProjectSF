@@ -17,19 +17,34 @@
 	margin-top: 10px;
 }
 
-.all-employees-container__add-button {
+.all-employees-container__add-button-container {
+	position: absolute;
+	padding: 0;
+	top: 90px;
+	left: 80px;
 	width: 100px;
 	height: 100px;
-	background: url(../../../assets/images/icon-add-blue.png);
+	transition: 0.2s ease-in-out;
+	border-radius: 50%;
+	background-color: #53ea93;
+	box-shadow: inset 0 0 0 50px #EEE;
+}
+
+.all-employees-container__add-button-container:hover  {
+	box-shadow: inset 0 0 0 0px #EEE;
+	transition: 0.25s ease-in;
+}
+
+.all-employees-container__add-button {
+	height: 100px;
+	width: 100px;
+	background: url(../../../assets/images/icon-add-blue-v2.png);
 	background-repeat: no-repeat;
 	cursor: pointer;
 	outline: 0 none;
 	border: 0px solid #000;
 	background-size: cover;
 	border-radius: 50%;
-	position: absolute;
-	top: 90px;
-	left: 80px;
 }
 
 .all-employees-container__table-container {

@@ -8,6 +8,11 @@ import Modal from 'react-modal';
 
 
 class AllCasesContainer extends Component {
+    constructor(props) {
+        super(props);
+        this.closeModal = this.closeModal.bind(this);  //Сделано специально потренироваться
+    }
+
 
     componentDidMount() {
         this.props.receiveCasesEmployees({ cases: true, employees: true });
@@ -57,13 +62,13 @@ class AllCasesContainer extends Component {
     };
 
 
-    closeModal = () => {
+    closeModal() {
         this.props.casesActions.setShowCaseDetails(false);
     }
 
 
     onAddCaseButtonClick = () => { //нажатие на кнопку Добавлене дела
-        let current_date = new Date().toISOString().split('T')[0];
+        let current_date = new Date().toLocaleDateString();
         this.props.caseActions.setStatus('new');
         this.props.caseActions.setDate('');
         this.props.caseActions.setLicenseNumber('');
@@ -88,7 +93,9 @@ class AllCasesContainer extends Component {
             <div className='all-cases-container'>
                 <h1 className='all-cases-container__header'>Информация о кражах велосипедов</h1>
                 <p className='all-cases-container__subheader'>Список всех зарегистрированных случаев кражи велосипедов</p>
-                <button className='all-cases-container__add-button' onClick={this.onAddCaseButtonClick} />
+                <div className='all-cases-container__add-button-container'>
+                    <button className='all-cases-container__add-button' onClick={this.onAddCaseButtonClick} />
+                </div>
 
                 {this.props.store.main.fetching.receiveCases.isFetching ? 
                     <Preloader {...this.props} preloaderText='Загрузка списка дел...'/> :
