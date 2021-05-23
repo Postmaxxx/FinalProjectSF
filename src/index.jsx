@@ -7,6 +7,20 @@ import './index.css';
 import { Context } from './components/Common/context'
 
 
+window.addEventListener('load', async () => {
+    if (navigator.serviceWorker) {
+        try {
+            const reg = await navigator.serviceWorker.register('sw.js')
+            console.log('SW OK ', reg);
+        } catch (e) {
+            console.log('SW Fail');
+        }
+    }
+})
+
+
+
+
 const urls = {
     reportCase: {
         url: 'http://84.201.129.203:8888/api/public/report',

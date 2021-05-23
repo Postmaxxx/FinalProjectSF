@@ -21,7 +21,7 @@ class AllEmployeesContainer extends Component {
         this.props.mainActions.setFetching('start', 'getDetailedEmployee');
         axios.get(`http://84.201.129.203:8888/api/officers/${_id}`, {headers: {'Authorization': `Bearer ${token}`}})
         .then(response => {
-            if (response.status === 200) {
+            if (response?.status === 200) {
                 this.props.mainActions.setFetching('success', 'getDetailedEmployee', 'Employee data has been received!');
                 this.props.employeeActions.setEmail(response.data.email);
                 this.props.employeeActions.setFirstName(response.data.firstName);
@@ -33,7 +33,7 @@ class AllEmployeesContainer extends Component {
             }
         })
         .catch(error => {
-            this.props.mainActions.setFetching('error', 'getDetailedCase', `Произошла ошибка при загрузке сотрудника: ${error.response.status} ( ${error.message} )`);
+            this.props.mainActions.setFetching('error', 'getDetailedCase', `Произошла ошибка при загрузке сотрудника: ${error?.response?.status} ( ${error?.message} )`);
             alert(error.response);
         })
     }

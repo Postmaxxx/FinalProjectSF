@@ -116,7 +116,7 @@ class EmployeeDetailsContainer extends Component {
             this.props.mainActions.setFetching('start', 'updateEmployee');
             axios.put(`http://84.201.129.203:8888/api/officers/${_id}`, employeeСorrected, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
-                if (response.status === 200) {
+                if (response?.status === 200) {
                     this.props.mainActions.setFetching('success', 'updateEmployee', 'Редактирование сотрудника успешно завершено!');
                     employeeСorrected._id = _id; //добавляем поле _id
                     this.props.employeesActions.setEditEmployee(employeeСorrected); //обновляем массив сотрудников
@@ -124,14 +124,14 @@ class EmployeeDetailsContainer extends Component {
                 }
             })
             .catch(error => {
-                this.props.mainActions.setFetching('error', 'updateEmployee', `Произошла ошибка при редактировании сотрудника: ${error.response.status} ( ${error.message} )`);
-                alert(`Произошла ошибка: ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
+                this.props.mainActions.setFetching('error', 'updateEmployee', `Произошла ошибка при редактировании сотрудника: ${error?.response?.status} ( ${error?.message} )`);
+                alert(`Произошла ошибка: ${error?.response?.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
             })
         } else { //если его нет, создание
             this.props.mainActions.setFetching('start', 'createEmployee');
             axios.post('http://84.201.129.203:8888/api/officers', employeeСorrected, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
-                if (response.status===200) {
+                if (response?.status===200) {
                     let _id = response.data._id;
                     this.props.employeesActions.setDetailedEmployeeId(_id);
                     this.props.mainActions.setFetching('success', 'createEmployee', 'Создание сотрудника успешно завершено!');
@@ -141,8 +141,8 @@ class EmployeeDetailsContainer extends Component {
                 }
             })
             .catch(error => {
-                this.props.mainActions.setFetching('error', 'createEmployee', `Произошла ошибка при создании сотрудника: ${error.response.status} ( ${error.message} )`);
-                alert(`Произошла ошибка: ${error.response.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
+                this.props.mainActions.setFetching('error', 'createEmployee', `Произошла ошибка при создании сотрудника: ${error?.response?.status} ( ${error.message} )`);
+                alert(`Произошла ошибка: ${error?.response?.status} ( ${error.message} ). Попробуйте изменить данные (возможно, данный email занят)`);
             });
         };
     }
@@ -156,15 +156,15 @@ class EmployeeDetailsContainer extends Component {
             this.props.mainActions.setFetching('start', 'deleteEmployee');
             axios.delete(`http://84.201.129.203:8888/api/officers/${_id}`, {headers: {'Authorization': `Bearer ${token}`}})
             .then(response => {
-                if (response.status === 200) {
+                if (response?.status === 200) {
                     this.props.mainActions.setFetching('success', 'deleteEmployee', 'Удаление сотрудника успешно завершено...');
                     this.props.employeesActions.setDeleteEmployeeById(_id); //удаление из массива
                     this.closeDetails();
                 }
             })
             .catch(error => {
-                this.props.mainActions.setFetching('error', 'deleteEmployee', `Произошла ошибка при удалении сотрудника: ${error.response.status} ( ${error.message} )`);
-                alert(`Произошла ошибка: ${error.status} ( ${error.message} )`);
+                this.props.mainActions.setFetching('error', 'deleteEmployee', `Произошла ошибка при удалении сотрудника: ${error?.response?.status} ( ${error?.message} )`);
+                alert(`Произошла ошибка: ${error?.status} ( ${error?.message} )`);
             });
         }
         this.closeConfirmation();

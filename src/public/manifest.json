@@ -1,0 +1,9 @@
+{
+  "name": "Final Project SF PWA",
+  "short_name": "Final PWA",
+  "theme_color": "#7cc5ff",
+  "background_color": "#1d9bff",
+  "display": "standalone",
+  "orientation": "landscape",
+  "start_url": "."
+}
